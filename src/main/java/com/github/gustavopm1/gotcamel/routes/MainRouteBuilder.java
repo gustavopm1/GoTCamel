@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.RouteDefinition;
-import org.apache.camel.spring.spi.ApplicationContextRegistry;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
