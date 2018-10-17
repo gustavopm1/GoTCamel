@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Data
 public class GotCamelConfiguration {
 
-    GotCamelRoutes routes;
+    GotCamelConfigurationRoute routes;
     GotCamelRouteIdentification ids;
 
 }

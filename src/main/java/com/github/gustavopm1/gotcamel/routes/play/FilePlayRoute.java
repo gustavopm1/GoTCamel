@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
+import static com.github.gustavopm1.gotcamel.predicates.play.FilePlayPredicates.*;
+
 
 @Component
 @Slf4j
@@ -30,7 +32,7 @@ public class FilePlayRoute extends MainRouteBuilder {
     private FilePlayService filePlayService;
 
     @Override
-    public String getFrom() { return configuration.getRoutes().getPlayfile(); }
+    public String getFrom() { return configuration.getRoutes().getInbound().getPlayfile(); }
 
     @Override
     public String getRouteId() { return configuration.getIds().getPlayfile(); }
@@ -46,15 +48,24 @@ public class FilePlayRoute extends MainRouteBuilder {
                 .log(LoggingLevel.INFO,log,getRouteId(),"Processing ${body.size()} lines")
                 .split(simple("${body}"))
                     .choice()
-                        .when(body().startsWith("Hello")).when(body().isInstanceOf(String.class))
+                        .when(isFilePlayHello())
                             .log(LoggingLevel.INFO,log,getRouteId(),"Started with hello")
-                        .endChoice()
+                        .when(isFilePlayGreetName())
+                            .bean(filePlayService, "greetName").id("filePlayServiceGreetName")
+                            .log(LoggingLevel.INFO,log,getRouteId(),"Hello Gustavo!")
+                        .when(isFilePlayCatMeow())
+                            .bean(filePlayService, "meowCat").id("filePlayServiceMeowCat")
+                            .log(LoggingLevel.INFO,log,"The cat is meowing!!")
+                        .when(isStatsTxtFile())
+                            .bean(filePlayService, "writeInStats").id("filePlayServiceWriteInStats")
+                            .log(LoggingLevel.INFO,log,"Writing in Stats.txt File")
+                    .endChoice()
                         .otherwise()
-                    .log("${body}")
+                    .log("${body} - ${headers}")
                 .end()
                 .bean(filePlayService, "toUpperCase").id("filePlayServiceToUpperCase")
                 .log("End of "+getRouteId())
-                .to("file:C:/Java Projects/GoTCamel/output");
+                .to(configuration.getRoutes().getOutbound().getPlayfile());
 
     }
 

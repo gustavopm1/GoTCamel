@@ -12,6 +12,9 @@ spring:
 com:
   gotcamel:
     routes:
-      playfile: file:data/?include=.*\.txt
+      inbound:
+        playfile: file:data/?include=.*\.txt
+      outbound:
+        playfile: file:output/?fileName=mydata-${dollar_sign:$}{date:now:yyyy-MM-dd-mm-ss}.txt&fileExist=Append
     ids:
       playfile: play-file

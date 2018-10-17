@@ -31,12 +31,6 @@ public abstract class MainRouteBuilder extends RouteBuilder {
         //Print the end of the process with the timer marking how much it took to process the queue
         processor.onCompletion().process(this::processRouteEnd).process(this::logDuration).log("Took ${in.header."+ROUTE_DURATION+"} to process Exchange ${exchangeId}");
 
-        //Handle the generic exception
-       /* processor
-            .onException(Exception.class)
-            .handled(true)
-            .log("Ocorreu um erro ao tratar o dado da fila "+getRouteId()+"")
-        .end();*/
     }
 
 
