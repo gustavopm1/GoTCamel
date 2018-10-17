@@ -11,8 +11,6 @@ import org.apache.camel.model.RouteDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-
 import static com.github.gustavopm1.gotcamel.predicates.play.FilePlayPredicates.*;
 
 
@@ -52,7 +50,7 @@ public class FilePlayRoute extends MainRouteBuilder {
                             .log(LoggingLevel.INFO,log,getRouteId(),"Started with hello")
                         .when(isFilePlayGreetName())
                             .bean(filePlayService, "greetName").id("filePlayServiceGreetName")
-                            .log(LoggingLevel.INFO,log,getRouteId(),"Hello Gustavo!")
+                            .log(LoggingLevel.INFO,log,getRouteId(),"Hello Person!")
                         .when(isFilePlayCatMeow())
                             .bean(filePlayService, "meowCat").id("filePlayServiceMeowCat")
                             .log(LoggingLevel.INFO,log,"The cat is meowing!!")
@@ -66,7 +64,6 @@ public class FilePlayRoute extends MainRouteBuilder {
                 .bean(filePlayService, "toUpperCase").id("filePlayServiceToUpperCase")
                 .log("End of "+getRouteId())
                 .to(configuration.getRoutes().getOutbound().getPlayfile());
-
     }
 
     @Override

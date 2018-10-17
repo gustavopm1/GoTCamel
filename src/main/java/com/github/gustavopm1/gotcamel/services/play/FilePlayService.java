@@ -19,7 +19,7 @@ public class FilePlayService {
     }
 
     public String writeInStats(){
-        return "*!@#$-";
+        return "*!@#$-\n";
     }
 
 }
