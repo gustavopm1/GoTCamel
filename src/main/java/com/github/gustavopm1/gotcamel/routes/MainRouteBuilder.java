@@ -29,7 +29,12 @@ public abstract class MainRouteBuilder extends RouteBuilder {
         this.routeConfigure(processor);
 
         //Print the end of the process with the timer marking how much it took to process the queue
-        processor.onCompletion().process(this::processRouteEnd).process(this::logDuration).log("Took ${in.header."+ROUTE_DURATION+"} to process Exchange ${exchangeId}");
+        processor
+            .onCompletion()
+            .process(this::processRouteEnd)
+            .process(this::logDuration)
+            .log("Took ${in.header."+ROUTE_DURATION+"} to process Exchange ${exchangeId}")
+            .log("Returned ${body} - ${headers} from Route "+getRouteId());
 
     }
 

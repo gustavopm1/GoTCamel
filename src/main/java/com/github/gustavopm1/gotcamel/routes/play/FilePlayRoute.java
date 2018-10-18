@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.model.RouteDefinition;
+import org.apache.camel.model.dataformat.JsonLibrary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -62,6 +63,8 @@ public class FilePlayRoute extends MainRouteBuilder {
                     .log("${body} - ${headers}")
                 .end()
                 .bean(filePlayService, "toUpperCase").id("filePlayServiceToUpperCase")
+                .marshal().json(JsonLibrary.Jackson,true)
+                .convertBodyTo(String.class)
                 .log("End of "+getRouteId())
                 .to(configuration.getRoutes().getOutbound().getPlayfile());
     }

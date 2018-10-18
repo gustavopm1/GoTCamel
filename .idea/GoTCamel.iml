@@ -62,12 +62,17 @@
     <orderEntry type="library" name="Maven: org.apache.camel:camel-spring-boot:2.21.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-spring:2.21.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-core-starter:2.21.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.camel:camel-test:2.19.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.camel:camel-core:2.19.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-test:2.21.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-core:2.21.2" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.12" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-core:2.2.11" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-impl:2.2.11" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-core:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-impl:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-jackson:2.21.2" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.8.11" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.6" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.11.2" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.8.0" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.11" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.h2database:h2:1.4.197" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-configuration-processor:1.5.16.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.16.22" level="project" />
