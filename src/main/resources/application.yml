@@ -8,13 +8,14 @@ spring:
     user: roymustang
     password: carmesinalch
 
-
 com:
   gotcamel:
     routes:
       inbound:
-        playfile: file:data/?include=.*\.txt
+        movie: direct:movies
       outbound:
-        playfile: file:output/?fileName=mydata-${dollar_sign:$}{date:now:yyyy-MM-dd-mm-ss}.txt&fileExist=Append
+        movie: ''
     ids:
-      playfile: play-file
+      movie: movies
+    names:
+      movie: Movie Route

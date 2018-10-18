@@ -1,9 +1,0 @@
-com:
-  gotcamel:
-    routes:
-      inbound:
-        playfile: direct:play-file
-      outbound:
-        playfile: mock:play-file
-    ids:
-      playfile: play-file

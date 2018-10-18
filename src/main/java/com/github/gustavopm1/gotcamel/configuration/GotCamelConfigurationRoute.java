@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class GotCamelConfigurationRoute {
-    GotCamelRoutes inbound;
-    GotCamelRoutes outbound;
+    GotCamelIdentifications inbound;
+    GotCamelIdentifications outbound;
 
 }

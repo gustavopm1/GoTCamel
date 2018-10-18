@@ -1,7 +1,9 @@
 package com.github.gustavopm1.gotcamel.routes;
 
+import com.github.gustavopm1.gotcamel.GotCamelConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.RouteDefinition;
 
@@ -12,42 +14,47 @@ import java.time.LocalDateTime;
 @Slf4j
 public abstract class MainRouteBuilder extends RouteBuilder {
 
-    protected static final String ROUTE_START_KEY = "SOR";
-    protected static final String ROUTE_END_KEY = "EOR";
-    protected static final String ROUTE_DURATION = "DOR";
+    public abstract String getFrom();
+    public abstract String getRouteId();
+    public abstract String getRouteName();
 
     public abstract void routeConfigure(RouteDefinition processor);
     public abstract void routeExceptions(RouteDefinition processor);
-    public abstract String getFrom();
-    public abstract String getRouteId();
+
 
     @Override
     public void configure(){
 
-        RouteDefinition processor = from(getFrom()).routeId(getRouteId()).process(this::processRouteStart);
-        this.routeExceptions(processor);
-        this.routeConfigure(processor);
+        RouteDefinition processor = from(getFrom())
+                                    .routeId(getRouteId())
+                                    .process(this::processRouteStart);
 
         //Print the end of the process with the timer marking how much it took to process the queue
         processor
             .onCompletion()
-            .process(this::processRouteEnd)
-            .process(this::logDuration)
-            .log("Took ${in.header."+ROUTE_DURATION+"} to process Exchange ${exchangeId}")
-            .log("Returned ${body} - ${headers} from Route "+getRouteId());
+                .process(this::processRouteEnd)
+                .process(this::logDuration)
+                .log(LoggingLevel.INFO,log,getRouteId(),"Took ${in.header."+ GotCamelConstants.ROUTE_DURATION+"} to process ${in.header."+GotCamelConstants.ROUTE_NAME+"}")
+                .log(LoggingLevel.TRACE,log,getRouteId(),"IN.BODY: ${in.body} - OUT.BODY: ${out.body} - IN.HEADERS: ${in.headers}")
+            .end()
+        ;
 
+        this.routeExceptions(processor);
+        this.routeConfigure(processor);
     }
 
+    private void processRouteStart(Exchange exchange){
+        exchange.getIn().setHeader(GotCamelConstants.ROUTE_START_KEY, LocalDateTime.now());
+        exchange.getIn().setHeader(GotCamelConstants.ROUTE_ID, getRouteId());
+        exchange.getIn().setHeader(GotCamelConstants.ROUTE_NAME, getRouteName());
+    }
 
-
-    private void processRouteStart(Exchange exchange){ exchange.getIn().setHeader(ROUTE_START_KEY, LocalDateTime.now()); }
-
-    private void processRouteEnd(Exchange exchange){ exchange.getIn().setHeader(ROUTE_END_KEY, LocalDateTime.now()); }
+    private void processRouteEnd(Exchange exchange){ exchange.getIn().setHeader(GotCamelConstants.ROUTE_END_KEY, LocalDateTime.now()); }
 
     private void logDuration(Exchange exchange){
-        final LocalDateTime start = (LocalDateTime)exchange.getIn().getHeaders().get(ROUTE_START_KEY);
-        final LocalDateTime end = (LocalDateTime)exchange.getIn().getHeaders().get(ROUTE_END_KEY);
-        exchange.getIn().setHeader(ROUTE_DURATION, Duration.between(start,end).toString());
+        final LocalDateTime start = (LocalDateTime)exchange.getIn().getHeaders().get(GotCamelConstants.ROUTE_START_KEY);
+        final LocalDateTime end = (LocalDateTime)exchange.getIn().getHeaders().get(GotCamelConstants.ROUTE_END_KEY);
+        exchange.getIn().setHeader(GotCamelConstants.ROUTE_DURATION, Duration.between(start,end).toString());
     }
 
 }
