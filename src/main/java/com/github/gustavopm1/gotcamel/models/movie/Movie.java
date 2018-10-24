@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 @Builder
 public class Movie {
+    Integer id;
     String original_title;
     String overview;
     int year;

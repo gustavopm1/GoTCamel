@@ -1,5 +1,6 @@
 package com.github.gustavopm1.gotcamel.models.movie;
 
+import com.github.gustavopm1.gotcamel.models.SearchType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,6 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class TypeValueData {
-    String type;
+    SearchType type;
     String value;
 }

@@ -6,4 +6,14 @@ public class GotCamelConstants {
     public static final String ROUTE_DURATION = "DOR";
     public static final String ROUTE_ID = "ROUTEID";
     public static final String ROUTE_NAME = "ROUTENAME";
+    public static final String TYPE_VALUE = "GoT-TYPEVALUE";
+    public static final String TYPE_NAME = "GoT-TYPENAME";
+
+    /* Movie */
+    public static final String MOVIE_NAME = "MOVIENAME";
+    public static final String MOVIE_ID = "MOVIEID";
+
+    /* Person */
+    public static final String PERSON_NAME = "PERSONNAME";
+    public static final String PERSON_ID = "PERSONID";
 }

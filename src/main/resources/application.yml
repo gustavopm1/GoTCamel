@@ -13,9 +13,17 @@ com:
     routes:
       inbound:
         movie: direct:movies
+        movieCast: direct:movieCast
+        person: direct:person
       outbound:
         movie: ''
+        movieCast: ''
+        person: ''
     ids:
       movie: movies
+      movieCast: movieCast
+      person: person
     names:
       movie: Movie Route
+      movieCast: Movie Cast Route
+      person: Person Route

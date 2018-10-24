@@ -1,0 +1,96 @@
+package com.github.gustavopm1.gotcamel.routes.movies;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.github.gustavopm1.gotcamel.models.Request;
+import com.github.gustavopm1.gotcamel.models.Response;
+import com.github.gustavopm1.gotcamel.models.SearchType;
+import com.github.gustavopm1.gotcamel.models.movie.Crew;
+import com.github.gustavopm1.gotcamel.models.movie.Movie;
+import com.github.gustavopm1.gotcamel.models.movie.TypeValueData;
+import com.github.gustavopm1.gotcamel.routes.AbstractRouteTest;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.IOException;
+import java.util.Arrays;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
+@RunWith(SpringRunner.class)
+@Slf4j
+public class MovieCrewApiRouteTest extends AbstractRouteTest {
+
+    @Test
+    public void testRouteSetCrewByMovieName() throws IOException {
+        Response<Movie> returned = sendMessage(
+                configuration.getRoutes().getInbound().getMovie(),
+                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.MOVIENAME).value("13th Warrior").build() ).user("testuser").build(),
+                NO_HEADERS,
+                (new TypeReference<Response<Movie>>(){})
+        );
+
+        returned = sendMessage(
+                configuration.getRoutes().getInbound().getMovie(),
+                Request.<TypeValueData>builder().body(TypeValueData.builder().type(SearchType.CREWMOVIENAME).value(returned.getBody().getOriginal_title()).build()).user("testuser").build(),
+                NO_HEADERS,
+                (new TypeReference<Response<Movie>>(){})
+        );
+
+        assertThat(returned)
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("found",true)
+                .hasFieldOrProperty("body");
+
+        assertThat(returned.getBody())
+                .isNotNull()
+                .isInstanceOf(Movie.class)
+                .hasFieldOrPropertyWithValue("original_title","13th Warrior")
+                .hasFieldOrPropertyWithValue("year",1999)
+                .hasFieldOrPropertyWithValue("crew", Arrays.asList(Crew.builder().id(1090).name("John Mctiernan").department("Directing").build(),
+                        Crew.builder().id(19893).name("warren Lewis").department("Writing").build()));
+
+    }
+
+
+    @Test
+    public void testRouteSetCrewByMovieId() throws IOException{
+
+        Response<Movie> returned = sendMessage(
+                configuration.getRoutes().getInbound().getMovie(),
+                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.MOVIENAME).value("13th Warrior").build() ).user("testuser").build(),
+                NO_HEADERS,
+                (new TypeReference<Response<Movie>>(){})
+        );
+
+        System.out.println("ORIGINAL TITLE: " + returned.getBody().getOriginal_title());
+
+        returned = sendMessage(
+                configuration.getRoutes().getInbound().getMovie(),
+                Request.<TypeValueData>builder().body(TypeValueData.builder().type(SearchType.CREWMOVIEID)
+                        .value(Integer.toString(returned.getBody().getId())).build()).user("testuser").build(),
+                NO_HEADERS,
+                (new TypeReference<Response<Movie>>(){})
+        );
+
+        System.out.println("ORIGINAL TITLE: " + returned.getBody().getOriginal_title());
+
+
+        assertThat(returned)
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("found",true)
+                .hasFieldOrProperty("body");
+
+        assertThat(returned.getBody())
+                .isNotNull()
+                .isInstanceOf(Movie.class)
+                .hasFieldOrPropertyWithValue("original_title","13th Warrior")
+                .hasFieldOrPropertyWithValue("year",1999)
+                .hasFieldOrPropertyWithValue("crew", Arrays.asList(Crew.builder().id(1090).name("John Mctiernan").department("Directing").build(),
+                        Crew.builder().id(19893).name("warren Lewis").department("Writing").build()));
+    }
+
+}

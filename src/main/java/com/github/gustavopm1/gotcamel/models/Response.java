@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Response<T> {
+public class  Response<T> {
 
     T body;
     boolean found;
