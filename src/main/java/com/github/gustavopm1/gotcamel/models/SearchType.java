@@ -9,5 +9,6 @@ public enum SearchType {
     CREWMOVIEID,
     KEYWORDSMOVIEID,
     KEYWORDSMOVIENAME,
-    PERSON
+    PERSON,
+    FULLMOVIE
 }

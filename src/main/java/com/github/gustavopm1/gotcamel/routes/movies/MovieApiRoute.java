@@ -104,6 +104,13 @@ public class MovieApiRoute extends MainRouteBuilder {
                         .bean(movieKeywordsService,"getMovieKeywordsById").id("getMovieKeywordsByIdServiceBean")
                     .endChoice()
 
+                    .when(isFindFullMovieByMovieId())
+                        .bean(service,"getMovie").id("getFullMovieServicedBean")
+                        .bean(movieCastService,"getMovieCastById").id("getFullMovieCastByIdServiceBean")
+                        .bean(movieCrewService,"getMovieCrewById").id("getFullMovieCrewByIdServiceBean")
+                        .bean(movieKeywordsService,"getMovieKeywordsById").id("getFullMovieKeywordsByIdServiceBean")
+                    .endChoice()
+
                 .otherwise()
                     .process(new Processor() {
                         @Override

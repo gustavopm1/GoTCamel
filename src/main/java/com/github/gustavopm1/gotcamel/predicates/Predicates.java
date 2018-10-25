@@ -40,5 +40,8 @@ public class Predicates {
         return e -> (e.getIn().getHeader(TYPE_NAME)).equals(SearchType.KEYWORDSMOVIEID);
     }
 
+    public static ComposablePredicate isFindFullMovieByMovieId(){
+        return e -> (e.getIn().getHeader(TYPE_NAME)).equals(SearchType.FULLMOVIE);
+    }
 
 }
