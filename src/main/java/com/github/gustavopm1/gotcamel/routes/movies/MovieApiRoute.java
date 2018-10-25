@@ -70,6 +70,10 @@ public class MovieApiRoute extends MainRouteBuilder {
                         .bean(service,"getMovie").id("getMovieServiceBean")
                     .endChoice()
 
+                    .when(isFindMovieById())
+                        .bean(service,"getMovieById").id("getMovieByIdServiceBean")
+                    .endChoice()
+
                     .when(isFindMovieCastByMovieId())
                         .bean(service,"getMovie").id("getMovieServiceOnCastIdBean")
                         .bean(movieCastService,"getMovieCastById").id("getMovieCastByIdServiceBean")
@@ -99,6 +103,7 @@ public class MovieApiRoute extends MainRouteBuilder {
                         .bean(service,"getMovie").id("getMovieServiceOnKeywordsIdBean")
                         .bean(movieKeywordsService,"getMovieKeywordsById").id("getMovieKeywordsByIdServiceBean")
                     .endChoice()
+
                 .otherwise()
                     .process(new Processor() {
                         @Override

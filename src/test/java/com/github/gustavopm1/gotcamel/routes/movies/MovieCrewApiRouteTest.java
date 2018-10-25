@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -61,12 +62,10 @@ public class MovieCrewApiRouteTest extends AbstractRouteTest {
 
         Response<Movie> returned = sendMessage(
                 configuration.getRoutes().getInbound().getMovie(),
-                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.MOVIENAME).value("13th Warrior").build() ).user("testuser").build(),
+                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.MOVIEID).value("1911").build() ).user("testuser").build(),
                 NO_HEADERS,
                 (new TypeReference<Response<Movie>>(){})
         );
-
-        System.out.println("ORIGINAL TITLE: " + returned.getBody().getOriginal_title());
 
         returned = sendMessage(
                 configuration.getRoutes().getInbound().getMovie(),
@@ -76,9 +75,6 @@ public class MovieCrewApiRouteTest extends AbstractRouteTest {
                 (new TypeReference<Response<Movie>>(){})
         );
 
-        System.out.println("ORIGINAL TITLE: " + returned.getBody().getOriginal_title());
-
-
         assertThat(returned)
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("found",true)
@@ -87,10 +83,10 @@ public class MovieCrewApiRouteTest extends AbstractRouteTest {
         assertThat(returned.getBody())
                 .isNotNull()
                 .isInstanceOf(Movie.class)
-                .hasFieldOrPropertyWithValue("original_title","13th Warrior")
-                .hasFieldOrPropertyWithValue("year",1999)
-                .hasFieldOrPropertyWithValue("crew", Arrays.asList(Crew.builder().id(1090).name("John Mctiernan").department("Directing").build(),
-                        Crew.builder().id(19893).name("warren Lewis").department("Writing").build()));
+                .hasFieldOrPropertyWithValue("original_title","The 13th Warrior")
+                .hasFieldOrPropertyWithValue("crew", Arrays.asList(Crew.builder().id(19893).name("Warren Lewis").department("Writing").build(),
+                                                                         Crew.builder().id(1090).name("John McTiernan").department("Directing").build()));
+
     }
 
 }

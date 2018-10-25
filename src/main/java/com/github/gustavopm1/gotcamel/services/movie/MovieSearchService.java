@@ -1,42 +1,80 @@
 package com.github.gustavopm1.gotcamel.services.movie;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.movie.*;
+import com.github.gustavopm1.gotcamel.services.AbstractRequestService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Body;
 import org.apache.camel.Header;
+import org.apache.camel.Headers;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.MOVIE_ID;
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.MOVIE_NAME;
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_VALUE;
 
 @Service
-public class MovieSearchService {
+@Slf4j
+public class MovieSearchService extends AbstractRequestService {
 
-    public Response<Movie> getMovie(@Header(TYPE_VALUE) String movieName){
+    @Override
+    public String getURL(Map<String, Object> headers) {
+        return String.valueOf(headers.get(TYPE_VALUE));
+    }
+
+    @Override
+    public Map<String, String> getHeaders(Map<String, Object> headers) {
+        return new HashMap<>();
+    }
+
+    public Response<Movie> getMovie(@Header(TYPE_VALUE) String movieName, @Headers Map<String,Object> headers){
+
+        ResponseEntity<String> response = doGet(headers);
+
+        if(response.getStatusCode().equals(HttpStatus.OK)){
+            try {
+                Movie movie=  new ObjectMapper().readValue(response.getBody(), Movie.class);
+                return Response.<Movie>builder()
+                        .found(true)
+                        .body(movie)
+                        .build();
+            }catch (Exception e){
+                log.error("Erro ao parsear filme!", e);
+            }
+        }
+
         return Response.<Movie>builder()
-                .body(
-                        Movie.builder()
-                        .original_title("13th Warrior")
-                        .year(1999)
-                        .id(1911)
-                        .overview("In AD 922, Arab courtier, Ahmad Ibn Fadlan accompanies a party of Vikings to the barbaric North to combat a terror " +
-                                "that slaughters Vikings and devours their flesh.")
-                        .genres(Arrays.asList(Genre.builder().id(28).name("Action").build(),
-                                              Genre.builder().id(12).name("Adventure").build(),
-                                              Genre.builder().id(14).name("Fantasy").build()))
-                        .runtime(102)
-                        .build()
-                )
-                .found(true)
+                .found(false)
                 .build();
     }
 
+    public Response<Movie> getMovieById(@Header (TYPE_VALUE) String id, @Headers Map<String, Object> headers){
 
+        ResponseEntity<String> response = doGet(headers);
+        System.out.println("Response::" + response.getBody());
+        if(response.getStatusCode().equals(HttpStatus.OK)){
+            try {
+                Movie movie=  new ObjectMapper().readValue(response.getBody(), Movie.class);
+                 return Response.<Movie>builder()
+                        .found(true)
+                        .body(movie)
+                        .build();
+            }catch (Exception e){
+                log.error("Erro ao parsear filme!", e);
+            }
+        }
+
+        return Response.<Movie>builder()
+                .found(false)
+                .build();
+
+    }
 
 
 

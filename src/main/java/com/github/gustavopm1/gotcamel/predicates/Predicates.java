@@ -2,7 +2,6 @@ package com.github.gustavopm1.gotcamel.predicates;
 
 import com.github.gustavopm1.gotcamel.models.SearchType;
 
-import static com.github.gustavopm1.gotcamel.GotCamelConstants.MOVIE_NAME;
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_NAME;
 
 public class Predicates {
@@ -10,10 +9,7 @@ public class Predicates {
 
 
     public static ComposablePredicate isFindMovieByName(){
-        return e ->{
-            System.out.println("\nTYPE_NAME: "+e.getIn().getHeader(TYPE_NAME));
-            return (e.getIn().getHeader(TYPE_NAME)).equals(SearchType.MOVIENAME);
-        };
+        return e -> (e.getIn().getHeader(TYPE_NAME)).equals(SearchType.MOVIENAME);
     }
 
     public static ComposablePredicate isFindMovieById(){
@@ -25,10 +21,7 @@ public class Predicates {
     }
 
     public static ComposablePredicate isFindMovieCrewByMovieName(){
-        return e-> {
-            boolean isthatit = (e.getIn().getHeader(TYPE_NAME)).equals(SearchType.CREWMOVIENAME);
-            return isthatit;
-        };
+        return e-> (e.getIn().getHeader(TYPE_NAME)).equals(SearchType.CREWMOVIENAME);
     }
 
     public static ComposablePredicate isFindMovieCastByMovieId(){
@@ -46,5 +39,6 @@ public class Predicates {
     public static ComposablePredicate isFindMovieKeywordsByMovieId(){
         return e -> (e.getIn().getHeader(TYPE_NAME)).equals(SearchType.KEYWORDSMOVIEID);
     }
+
 
 }

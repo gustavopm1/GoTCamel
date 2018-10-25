@@ -12,5 +12,6 @@ public class GotCamelConfiguration {
     GotCamelConfigurationRoute routes;
     GotCamelIdentifications ids;
     GotCamelIdentifications names;
+    String apiKey;
 
 }
