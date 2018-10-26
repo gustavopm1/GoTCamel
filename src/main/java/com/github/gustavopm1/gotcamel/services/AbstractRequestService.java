@@ -17,9 +17,15 @@ public abstract class AbstractRequestService {
     @Getter
     private GotCamelConfiguration configuration;
 
-    private static String BASEURL = "https://api.themoviedb.org/3/movie/";
+
+    /*
+    * BASEURL terá que ser "https://api.themoviedb.org/3/"
+    * Movie: https://api.themoviedb.org/3/movie/<<movieID>>?api_key=<<apiKey>>
+    * Search:https://api.themoviedb.org/3/search/movie?api_key=<<apiKey>>&query=<<movieName>>
+    * */
     public abstract String getURL(Map<String, Object> headers);
     public abstract Map<String,String> getHeaders(Map<String, Object> headers);
+
 
     public ResponseEntity<String> doGet(Map<String, Object> headers){
 
@@ -30,10 +36,9 @@ public abstract class AbstractRequestService {
 
         return new RestTemplate()
                 .exchange(
-                    BASEURL.concat(getURL(headers)).concat("?api_key=").concat(configuration.getApiKey()),
+                    configuration.getBaseUrl().concat(getURL(headers)).concat("?api_key=").concat(configuration.getApiKey()),
                     HttpMethod.GET,
                     new HttpEntity(httpHeaders),
                     String.class);
     }
-
 }

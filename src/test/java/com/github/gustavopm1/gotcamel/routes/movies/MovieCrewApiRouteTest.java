@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)

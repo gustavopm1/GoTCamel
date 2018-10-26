@@ -3,14 +3,18 @@ package com.github.gustavopm1.gotcamel.services.movie;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.gustavopm1.gotcamel.configuration.GotCamelConfiguration;
+import com.github.gustavopm1.gotcamel.configuration.GotCamelConfigurationServices;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.movie.Movie;
 import com.github.gustavopm1.gotcamel.models.movie.MovieKeyword;
 import com.github.gustavopm1.gotcamel.services.AbstractRequestService;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Body;
 import org.apache.camel.Header;
 import org.apache.camel.Headers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,8 +31,13 @@ import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_VALUE;
 @Slf4j
 public class MovieKeywordsService extends AbstractRequestService {
 
+    @Autowired
+    @Setter
+    private GotCamelConfiguration configuration;
+
     @Override
-    public String getURL(Map<String, Object> headers) { return String.valueOf(headers.get(TYPE_VALUE)).concat("/keywords"); }
+    public String getURL(Map<String, Object> headers) {
+        return configuration.getServices().getMovieKeywords().replace(":id",String.valueOf(headers.get(TYPE_VALUE)));    }
 
     @Override
     public Map<String, String> getHeaders(Map<String, Object> headers) { return new HashMap<>(); }
