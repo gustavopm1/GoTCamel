@@ -25,38 +25,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MovieCrewApiRouteTest extends AbstractRouteTest {
 
     @Test
-    public void testRouteSetCrewByMovieName() throws IOException {
-        Response<Movie> returned = sendMessage(
-                configuration.getRoutes().getInbound().getMovie(),
-                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.MOVIENAME).value("13th Warrior").build() ).user("testuser").build(),
-                NO_HEADERS,
-                (new TypeReference<Response<Movie>>(){})
-        );
-
-        returned = sendMessage(
-                configuration.getRoutes().getInbound().getMovie(),
-                Request.<TypeValueData>builder().body(TypeValueData.builder().type(SearchType.CREWMOVIENAME).value(returned.getBody().getOriginal_title()).build()).user("testuser").build(),
-                NO_HEADERS,
-                (new TypeReference<Response<Movie>>(){})
-        );
-
-        assertThat(returned)
-                .isNotNull()
-                .hasFieldOrPropertyWithValue("found",true)
-                .hasFieldOrProperty("body");
-
-        assertThat(returned.getBody())
-                .isNotNull()
-                .isInstanceOf(Movie.class)
-                .hasFieldOrPropertyWithValue("original_title","13th Warrior")
-                .hasFieldOrPropertyWithValue("year",1999)
-                .hasFieldOrPropertyWithValue("crew", Arrays.asList(Crew.builder().id(1090).name("John Mctiernan").department("Directing").build(),
-                        Crew.builder().id(19893).name("warren Lewis").department("Writing").build()));
-
-    }
-
-
-    @Test
     public void testRouteSetCrewByMovieId() throws IOException{
 
         Response<Movie> returned = sendMessage(

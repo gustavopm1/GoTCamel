@@ -29,7 +29,7 @@ public class MovieApiRouteTest extends AbstractRouteTest {
 
         Response<Movie> returned = sendMessage(
                 configuration.getRoutes().getInbound().getMovie(),
-                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.MOVIENAME).value("13th Warrior").build() ).user("testuser").build(),
+                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.MOVIENAME).value("The 13th Warrior").build() ).user("testuser").build(),
                 NO_HEADERS,
                 (new TypeReference<Response<Movie>>(){})
         );
@@ -42,8 +42,7 @@ public class MovieApiRouteTest extends AbstractRouteTest {
         assertThat(returned.getBody())
                 .isNotNull()
                 .isInstanceOf(Movie.class)
-                .hasFieldOrPropertyWithValue("original_title","13th Warrior")
-                .hasFieldOrPropertyWithValue("year",1999);
+                .hasFieldOrPropertyWithValue("original_title","The 13th Warrior");
 
     }
 
@@ -65,8 +64,7 @@ public class MovieApiRouteTest extends AbstractRouteTest {
         assertThat(returned.getBody())
                 .isNotNull()
                 .isInstanceOf(Movie.class)
-                .hasFieldOrPropertyWithValue("original_title","The 13th Warrior")
-                .hasFieldOrPropertyWithValue("year",0);
+                .hasFieldOrPropertyWithValue("original_title","The 13th Warrior");
 
     }
 

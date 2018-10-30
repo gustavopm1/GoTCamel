@@ -7,4 +7,7 @@ public class GotCamelConfigurationServices {
     String movieUrl;
     String movieCrewCast;
     String movieKeywords;
+    String movieUrlName;
+    String personUrl;
+    String personUrlName;
 }

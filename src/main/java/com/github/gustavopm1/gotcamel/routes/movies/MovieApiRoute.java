@@ -3,12 +3,8 @@ package com.github.gustavopm1.gotcamel.routes.movies;
 import com.github.gustavopm1.gotcamel.GotCamelConstants;
 import com.github.gustavopm1.gotcamel.configuration.GotCamelConfiguration;
 import com.github.gustavopm1.gotcamel.marshallers.movie.MovieMarshaller;
-import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.routes.MainRouteBuilder;
-import com.github.gustavopm1.gotcamel.services.movie.MovieCastService;
-import com.github.gustavopm1.gotcamel.services.movie.MovieCrewService;
-import com.github.gustavopm1.gotcamel.services.movie.MovieKeywordsService;
-import com.github.gustavopm1.gotcamel.services.movie.MovieSearchService;
+import com.github.gustavopm1.gotcamel.services.movie.*;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
@@ -31,7 +27,7 @@ public class MovieApiRoute extends MainRouteBuilder {
 
     @Autowired
     @Setter
-    private MovieSearchService service;
+    private MovieSearchService movieSearchService;
 
     @Autowired
     @Setter
@@ -44,6 +40,10 @@ public class MovieApiRoute extends MainRouteBuilder {
     @Autowired
     @Setter
     private MovieCastService movieCastService;
+
+    @Autowired
+    @Setter
+    private MovieSearchByIdService movieSearchByIdService;
 
     @Autowired
     @Setter
@@ -67,45 +67,45 @@ public class MovieApiRoute extends MainRouteBuilder {
                 .log(LoggingLevel.INFO,log,getRouteId(), "Headers are ${headers}")
                 .choice()
                     .when(isFindMovieByName())
-                        .bean(service,"getMovie").id("getMovieServiceBean")
+                        .bean(movieSearchService,"getMovie").id("getMovieServiceBean")
                     .endChoice()
 
                     .when(isFindMovieById())
-                        .bean(service,"getMovieById").id("getMovieByIdServiceBean")
+                        .bean(movieSearchByIdService,"getMovieById").id("getMovieByIdServiceBean")
                     .endChoice()
 
                     .when(isFindMovieCastByMovieId())
-                        .bean(service,"getMovie").id("getMovieServiceOnCastIdBean")
+                        .bean(movieSearchByIdService,"getMovieById").id("getMovieServiceOnCastIdBean")
                         .bean(movieCastService,"getMovieCastById").id("getMovieCastByIdServiceBean")
                     .endChoice()
 
                     .when(isFindMovieCastByMovieName())
-                        .bean(service,"getMovie").id("getMovieServiceOnCastNameBean")
+                        .bean(movieSearchService,"getMovie").id("getMovieServiceOnCastNameBean")
                         .bean(movieCastService,"getMovieCastByName").id("getMovieCastByNameServiceBean")
                     .endChoice()
 
                     .when(isFindMovieCrewByMovieId())
-                        .bean(service,"getMovie").id("getMovieServiceOnCrewIdBean")
+                        .bean(movieSearchByIdService,"getMovieById").id("getMovieServiceOnCrewIdBean")
                         .bean(movieCrewService,"getMovieCrewById").id("getMovieCrewByIdServiceBean")
                     .endChoice()
 
                     .when(isFindMovieCrewByMovieName())
-                        .bean(service,"getMovie").id("getMovieServiceOnCrewNameBean")
+                        .bean(movieSearchService,"getMovie").id("getMovieServiceOnCrewNameBean")
                         .bean(movieCrewService,"getMovieCrewByName").id("getMovieCrewByNameServiceBean")
                     .endChoice()
 
                     .when(isFindMovieKeywordsByMovieName())
-                        .bean(service,"getMovie").id("getMovieServiceOnKeywordsNameBean")
+                        .bean(movieSearchService,"getMovie").id("getMovieServiceOnKeywordsNameBean")
                         .bean(movieKeywordsService,"getMovieKeywordsByName").id("getMovieKeywordsByNameServiceBean")
                     .endChoice()
 
                     .when(isFindMovieKeywordsByMovieId())
-                        .bean(service,"getMovie").id("getMovieServiceOnKeywordsIdBean")
+                        .bean(movieSearchByIdService,"getMovieById").id("getMovieServiceOnKeywordsIdBean")
                         .bean(movieKeywordsService,"getMovieKeywordsById").id("getMovieKeywordsByIdServiceBean")
                     .endChoice()
 
                     .when(isFindFullMovieByMovieId())
-                        .bean(service,"getMovie").id("getFullMovieServicedBean")
+                        .bean(movieSearchByIdService,"getMovieById").id("getFullMovieServicedBean")
                         .bean(movieCastService,"getMovieCastById").id("getFullMovieCastByIdServiceBean")
                         .bean(movieCrewService,"getMovieCrewById").id("getFullMovieCrewByIdServiceBean")
                         .bean(movieKeywordsService,"getMovieKeywordsById").id("getFullMovieKeywordsByIdServiceBean")

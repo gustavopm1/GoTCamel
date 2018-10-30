@@ -44,4 +44,12 @@ public class Predicates {
         return e -> (e.getIn().getHeader(TYPE_NAME)).equals(SearchType.FULLMOVIE);
     }
 
+    public static ComposablePredicate isFindPersonById(){
+        return e-> (e.getIn().getHeader(TYPE_NAME)).equals(SearchType.PERSONID);
+    }
+
+    public static ComposablePredicate isFindPersonByName(){
+        return e-> (e.getIn().getHeader(TYPE_NAME)).equals(SearchType.PERSONNAME);
+    }
+
 }

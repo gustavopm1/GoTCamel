@@ -1,5 +1,6 @@
 package com.github.gustavopm1.gotcamel.marshallers.person;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.gustavopm1.gotcamel.models.Request;
@@ -33,12 +34,12 @@ public class PersonMarshaller implements DataFormat {
     @Override
     public Object unmarshal(Exchange exchange, InputStream inputStream) throws Exception {
         String jsonData = IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
-        JsonNode root = mapper.readTree(jsonData);
-        Request<?> request = mapper.convertValue(root,Request.class);
+
+        Request<?> request = mapper.readValue(jsonData,new TypeReference<Request<TypeValueData>>(){} );
 
         if(request.getBody() instanceof TypeValueData){
             exchange.getOut().setHeader(TYPE_NAME,((TypeValueData) request.getBody()).getType());
-            exchange.getOut().setHeader(TYPE_VALUE, ((TypeValueData)request.getBody()).getValue() );
+            exchange.getOut().setHeader(TYPE_VALUE,((TypeValueData) request.getBody()).getValue());
         }
 
         return mapper.writeValueAsString(request.getBody());

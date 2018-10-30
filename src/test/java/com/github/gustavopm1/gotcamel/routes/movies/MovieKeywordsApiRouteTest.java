@@ -54,36 +54,4 @@ public class MovieKeywordsApiRouteTest extends AbstractRouteTest {
                         MovieKeyword.builder().id(1585).name("snake").build(),
                         MovieKeyword.builder().id(1964).name("cave").build()));
     }
-
-    @Test
-    public void testRouteSetKeywordsByName() throws IOException{
-        Response<Movie> returned = sendMessage(
-                configuration.getRoutes().getInbound().getMovie(),
-                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.MOVIENAME).value("13th Warrior").build() ).user("testuser").build(),
-                NO_HEADERS,
-                (new TypeReference<Response<Movie>>(){})
-        );
-
-        returned = sendMessage(
-                configuration.getRoutes().getInbound().getMovie(),
-                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.KEYWORDSMOVIENAME).value(Integer.toString(returned.getBody().getId())).build() ).user("testuser").build(),
-                NO_HEADERS,
-                (new TypeReference<Response<Movie>>(){})
-        );
-
-        assertThat(returned)
-                .isNotNull()
-                .hasFieldOrPropertyWithValue("found",true)
-                .hasFieldOrProperty("body");
-
-        assertThat(returned.getBody())
-                .isNotNull()
-                .isInstanceOf(Movie.class)
-                .hasFieldOrPropertyWithValue("original_title","13th Warrior")
-                .hasFieldOrPropertyWithValue("year",1999)
-                .hasFieldOrPropertyWithValue("keywords", Arrays.asList(MovieKeyword.builder().id(616).name("witch").build(),
-                        MovieKeyword.builder().id(1585).name("snake").build(),
-                        MovieKeyword.builder().id(1964).name("cave").build()));
-    }
-
 }

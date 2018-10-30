@@ -73,52 +73,6 @@ public class MovieCastApiRouteTest extends AbstractRouteTest {
     }
 
     @Test
-    public void testRouteSetCastByName() throws IOException {
-        Response<Movie> returned = sendMessage(
-                configuration.getRoutes().getInbound().getMovie(),
-                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.MOVIENAME).value("13th Warrior").build() ).user("testuser").build(),
-                NO_HEADERS,
-                (new TypeReference<Response<Movie>>(){})
-        );
-
-        returned = sendMessage(
-                configuration.getRoutes().getInbound().getMovie(),
-                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.CASTMOVIENAME).value(returned.getBody().getOriginal_title()).build()).user("testuser").build(),
-                NO_HEADERS,
-                (new TypeReference<Response<Movie>>(){})
-        );
-
-        assertThat(returned)
-                .isNotNull()
-                .hasFieldOrPropertyWithValue("found",true)
-                .hasFieldOrProperty("body");
-
-        assertThat(returned.getBody())
-                .isNotNull()
-                .isInstanceOf(Movie.class)
-                .hasFieldOrPropertyWithValue("original_title","13th Warrior")
-                .hasFieldOrPropertyWithValue("year",1999)
-                .hasFieldOrPropertyWithValue("cast", Arrays.asList(MovieCast.builder()
-                                .id(3131)
-                                .name("Antonio Banderas")
-                                .character("Ahmad Ibn Fadlān")
-                                .profile_path("/85197jARsr06xQ84NhP9YoBL3sR.jpg")
-                                .build(),
-                        MovieCast.builder()
-                                .id(6200)
-                                .name("Diane Venora")
-                                .character("Queen Weilew")
-                                .profile_path("/3k7w5Y7gTAxN1JML7jhN8F8rVrS.jpg")
-                                .build(),
-                        MovieCast.builder()
-                                .id(19899)
-                                .name("Dennis Storhøi")
-                                .character("Herger the Joyous")
-                                .profile_path("/zc8O7O8l8wtX3EQmDV7jWOPjmHJ.jpg")
-                                .build()));
-    }
-
-    @Test
     public void testRouteCast() throws IOException {
 
         Response<List<MovieCast>> returned = sendMessage(

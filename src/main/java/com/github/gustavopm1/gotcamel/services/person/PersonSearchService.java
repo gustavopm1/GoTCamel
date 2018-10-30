@@ -1,38 +1,94 @@
 package com.github.gustavopm1.gotcamel.services.person;
 
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.gustavopm1.gotcamel.configuration.GotCamelConfiguration;
 import com.github.gustavopm1.gotcamel.models.Response;
+import com.github.gustavopm1.gotcamel.models.SearchType;
 import com.github.gustavopm1.gotcamel.models.person.Person;
-import org.apache.camel.Body;
+import com.github.gustavopm1.gotcamel.services.AbstractRequestService;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Header;
+import org.apache.camel.Headers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import static com.github.gustavopm1.gotcamel.GotCamelConstants.PERSON_ID;
-import static com.github.gustavopm1.gotcamel.GotCamelConstants.PERSON_NAME;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_NAME;
+import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_VALUE;
 
 @Service
-public class PersonSearchService {
-    public Response<Person> getPerson(@Header(PERSON_NAME) String personName){
+@Slf4j
+public class PersonSearchService extends AbstractRequestService {
+
+    @Autowired
+    @Setter
+    private GotCamelConfiguration configuration;
+
+    @Autowired
+    @Setter
+    private PersonSearchByIdService personSearchByIdService;
+
+
+    @Override
+    public String getURL(Map<String, Object> headers) {
+        return configuration.getServices().getPersonUrlName();
+    }
+
+    @Override
+    public Map<String, String> getHeaders(Map<String, Object> headers) {
+        return new HashMap<>();
+    }
+
+    @Override
+    public Map<String, String> getParams(Map<String, Object> params) {
+        Map<String,String> parameters = new HashMap<>();
+        parameters.put("query",String.valueOf(params.get(TYPE_VALUE)));
+        return parameters;
+    }
+
+
+    public Response<Person> getPerson(@Header(TYPE_VALUE) String personName, @Headers Map<String,Object> headers){
+
+        ResponseEntity<String> response = doGet(headers);
+
+        if(response.getStatusCode().equals(HttpStatus.OK)){
+            try {
+
+                JsonNode json = new ObjectMapper().readTree(response.getBody());
+
+                List<Person> people = new ObjectMapper().readValue(json.get("results").toString(), new TypeReference<List<Person>>(){});
+
+                Response<Person> responsePerson = Response.<Person>builder()
+                        .found(true)
+                        .body(people.get(0))
+                        .build();
+
+
+                headers.put(TYPE_NAME, SearchType.MOVIEID);
+                headers.put(TYPE_VALUE, responsePerson.getBody().getId());
+
+                return personSearchByIdService.getPersonById(Integer.toString(people.get(0).getId()),headers);
+
+            }catch (Exception e){
+                log.error("Erro ao parsear filme!", e);
+            }
+        }
+
         return Response.<Person>builder()
-                .body(
-                        Person.builder()
-                                .name("Kyle MacLachlan")
-                                .id(6677)
-                                .biography("Kyle Merritt MacLachlan (born February 22, 1959) is an American actor. MacLachlan widely known for his portrayal of Dale Cooper in the " +
-                                        "TV series Twin Peaks (1990–1991; 2017), and its prequel film Twin Peaks: Fire Walk with Me (1992). He is also known for his film roles including " +
-                                        "cult films such as Dune (1984), Blue Velvet (1986), The Hidden (1987), and Showgirls (1995). He has also had prominent roles in other television" +
-                                        " shows including appearing as Trey MacDougal in Sex and the City (2000–2002), Orson Hodge in Desperate Housewives (2006–2012), " +
-                                        "The Captain in How I Met Your Mother (2010–2014), the Mayor of Portland in Portlandia (2011–2018), and as Calvin Zabo in Agents of S.H.I.E.L.D. (2014–2015)." +
-                                        "\n\nMacLachlan was born in Yakima, Washington. His mother, Catherine (née Stone), was a public relations director, and his father, Kent Alan MacLachlan, was a stockbroker" +
-                                        " and lawyer. He has Scottish, Cornish and German ancestry. He has two younger brothers named Craig and Kent, both of whom live in the Pacific Northwest. MacLachlan graduated" +
-                                        " from Eisenhower High School in 1977. He graduated from the University of Washington in 1982 and, shortly afterward, moved to Hollywood, California to pursue his career.")
-                                .birthday(null)
-                                .deathday(null)
-                                .place_of_birth("Yakima - Washington - USA")
-                                .profile_path("/7DnMuDlSdpycAQQxOIDmV66qerc.jpg")
-                                .build()
-                )
-                .found(true)
+                .found(false)
                 .build();
     }
+
+
+
 
 }

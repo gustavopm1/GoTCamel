@@ -1,9 +1,11 @@
 package com.github.gustavopm1.gotcamel.services.movie;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.gustavopm1.gotcamel.configuration.GotCamelConfiguration;
-import com.github.gustavopm1.gotcamel.configuration.GotCamelConfigurationServices;
 import com.github.gustavopm1.gotcamel.models.Response;
+import com.github.gustavopm1.gotcamel.models.SearchType;
 import com.github.gustavopm1.gotcamel.models.movie.Movie;
 import com.github.gustavopm1.gotcamel.services.AbstractRequestService;
 import lombok.Setter;
@@ -16,8 +18,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_NAME;
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_VALUE;
 
 @Service
@@ -28,15 +32,25 @@ public class MovieSearchService extends AbstractRequestService {
     @Setter
     private GotCamelConfiguration configuration;
 
+    @Autowired
+    @Setter
+    private MovieSearchByIdService movieSearchByIdService;
+
 
     @Override
     public String getURL(Map<String, Object> headers) {
-        return configuration.getServices().getMovieUrl().replace(":id",String.valueOf(headers.get(TYPE_VALUE)));
+        return configuration.getServices().getMovieUrlName();
     }
 
     @Override
     public Map<String, String> getHeaders(Map<String, Object> headers) {
         return new HashMap<>();
+    }
+
+    public Map<String,String> getParams(Map<String, Object> params){
+        Map<String,String> parameters = new HashMap<>();
+        parameters.put("query",String.valueOf(params.get(TYPE_VALUE)));
+        return parameters;
     }
 
     public Response<Movie> getMovie(@Header(TYPE_VALUE) String movieName, @Headers Map<String,Object> headers){
@@ -45,11 +59,22 @@ public class MovieSearchService extends AbstractRequestService {
 
         if(response.getStatusCode().equals(HttpStatus.OK)){
             try {
-                Movie movie=  new ObjectMapper().readValue(response.getBody(), Movie.class);
-                return Response.<Movie>builder()
+
+                JsonNode json = new ObjectMapper().readTree(response.getBody());
+
+                List<Movie> movies = new ObjectMapper().readValue(json.get("results").toString(), new TypeReference<List<Movie>>(){});
+
+                Response<Movie> responseMovie = Response.<Movie>builder()
                         .found(true)
-                        .body(movie)
+                        .body(movies.get(0))
                         .build();
+
+
+                headers.put(TYPE_NAME, SearchType.MOVIEID);
+                headers.put(TYPE_VALUE, responseMovie.getBody().getId());
+
+                return movieSearchByIdService.getMovieById(Integer.toString(movies.get(0).getId()),headers);
+
             }catch (Exception e){
                 log.error("Erro ao parsear filme!", e);
             }
@@ -59,29 +84,5 @@ public class MovieSearchService extends AbstractRequestService {
                 .found(false)
                 .build();
     }
-
-    public Response<Movie> getMovieById(@Header (TYPE_VALUE) String id, @Headers Map<String, Object> headers){
-
-        ResponseEntity<String> response = doGet(headers);
-        System.out.println("Response::" + response.getBody());
-        if(response.getStatusCode().equals(HttpStatus.OK)){
-            try {
-                Movie movie=  new ObjectMapper().readValue(response.getBody(), Movie.class);
-                 return Response.<Movie>builder()
-                        .found(true)
-                        .body(movie)
-                        .build();
-            }catch (Exception e){
-                log.error("Erro ao parsear filme!", e);
-            }
-        }
-
-        return Response.<Movie>builder()
-                .found(false)
-                .build();
-
-    }
-
-
 
 }

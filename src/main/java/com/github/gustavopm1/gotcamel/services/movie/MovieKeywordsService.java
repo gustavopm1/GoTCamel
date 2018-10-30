@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.gustavopm1.gotcamel.configuration.GotCamelConfiguration;
-import com.github.gustavopm1.gotcamel.configuration.GotCamelConfigurationServices;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.movie.Movie;
 import com.github.gustavopm1.gotcamel.models.movie.MovieKeyword;
@@ -41,6 +40,10 @@ public class MovieKeywordsService extends AbstractRequestService {
 
     @Override
     public Map<String, String> getHeaders(Map<String, Object> headers) { return new HashMap<>(); }
+
+    public Map<String, String> getParams(Map<String, Object> params) {
+        return new HashMap<>();
+    }
 
 
     public Response<Movie> getMovieKeywordsById(@Header(TYPE_VALUE) String id, @Body Response<Movie> movie, @Headers Map<String,Object> headers){
