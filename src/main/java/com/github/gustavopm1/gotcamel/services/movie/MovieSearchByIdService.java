@@ -39,10 +39,7 @@ public class MovieSearchByIdService extends AbstractRequestService {
     }
 
     public Map<String,String> getParams(Map<String, Object> params){
-   /*     Map<String,String> parameters = new HashMap<>();
-        parameters.put("id", String.valueOf(params.get(TYPE_VALUE)));
-        return parameters;*/
-     return new HashMap<>();
+        return new HashMap<>();
     }
 
     public Response<Movie> getMovieById(@Header (TYPE_VALUE) String id, @Headers Map<String, Object> headers){

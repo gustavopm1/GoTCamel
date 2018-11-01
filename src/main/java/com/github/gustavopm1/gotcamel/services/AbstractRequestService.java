@@ -2,6 +2,7 @@ package com.github.gustavopm1.gotcamel.services;
 
 import com.github.gustavopm1.gotcamel.configuration.GotCamelConfiguration;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 public abstract class AbstractRequestService {
 
     @Autowired

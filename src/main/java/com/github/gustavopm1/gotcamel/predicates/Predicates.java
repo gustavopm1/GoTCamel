@@ -6,8 +6,6 @@ import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_NAME;
 
 public class Predicates {
 
-
-
     public static ComposablePredicate isFindMovieByName(){
         return e -> (e.getIn().getHeader(TYPE_NAME)).equals(SearchType.MOVIENAME);
     }
