@@ -5,11 +5,10 @@ camel:
 spring:
   activemq:
     broker-url: tcp://192.168.1.210:9876
-    user: roymustang
-    password: carmesinalch
 
 com:
   gotcamel:
+    baseUrl: https://api.themoviedb.org/3/
     routes:
       inbound:
         movie: direct:movies
@@ -23,6 +22,13 @@ com:
       movie: movies
       movieCast: movieCast
       person: person
+    services:
+      movieUrl: movie/:id
+      movieUrlName: search/movie
+      movieCrewCast: movie/:id/credits
+      movieKeywords: movie/:id/keywords
+      personUrl: person/:id
+      personUrlName: search/person
     names:
       movie: Movie Route
       movieCast: Movie Cast Route

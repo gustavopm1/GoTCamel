@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles({"test","prod"})
 public class MovieKeywordsServiceIntegratedTests {
 
     @Autowired

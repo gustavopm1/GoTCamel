@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles({"test","prod"})
 public class MovieSearchByNameIntegratedTests {
 
     @Autowired

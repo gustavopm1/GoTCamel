@@ -192,3 +192,4 @@ buildNumber.properties
 
 /data/
 /output/
+**/application-prod.yml

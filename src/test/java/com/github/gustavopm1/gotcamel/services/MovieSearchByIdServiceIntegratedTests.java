@@ -28,7 +28,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles({"test","prod"})
 public class MovieSearchByIdServiceIntegratedTests {
 
     @Autowired
@@ -120,7 +120,6 @@ public class MovieSearchByIdServiceIntegratedTests {
                                     .character("Herger the Joyous")
                                     .profile_path("/zc8O7O8l8wtX3EQmDV7jWOPjmHJ.jpg")
                                     .build()));
-
         }
 }
 
