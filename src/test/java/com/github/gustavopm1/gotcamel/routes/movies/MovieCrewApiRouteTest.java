@@ -31,15 +31,8 @@ public class MovieCrewApiRouteTest extends AbstractRouteTest {
 
         Response<Movie> returned = sendMessage(
                 configuration.getRoutes().getInbound().getMovie(),
-                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.MOVIEID).value("1911").build() ).user("testuser").build(),
-                NO_HEADERS,
-                (new TypeReference<Response<Movie>>(){})
-        );
-
-        returned = sendMessage(
-                configuration.getRoutes().getInbound().getMovie(),
                 Request.<TypeValueData>builder().body(TypeValueData.builder().type(SearchType.CREWMOVIEID)
-                        .value(Integer.toString(returned.getBody().getId())).build()).user("testuser").build(),
+                        .value("1911").build()).user("testuser").build(),
                 NO_HEADERS,
                 (new TypeReference<Response<Movie>>(){})
         );

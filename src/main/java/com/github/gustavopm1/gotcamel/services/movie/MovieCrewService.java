@@ -70,15 +70,4 @@ public class MovieCrewService extends AbstractRequestService {
                 .found(false)
                 .build();
     }
-
-    public Response<Movie> getMovieCrewByName(@Header(TYPE_VALUE) String movieName, @Body Response<Movie> movie){
-        List<Crew> crew = Arrays.asList(Crew.builder().id(1090).name("John Mctiernan").department("Directing").build(),
-                Crew.builder().id(19893).name("warren Lewis").department("Writing").build());
-
-        movie.getBody().setCrew(crew);
-
-        return movie;
-    }
-
-
 }

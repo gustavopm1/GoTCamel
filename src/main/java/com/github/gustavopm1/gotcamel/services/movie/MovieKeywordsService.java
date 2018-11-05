@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,17 +67,4 @@ public class MovieKeywordsService extends AbstractRequestService {
                 .found(false)
                 .build();
     }
-
-
-    public Response<Movie> getMovieKeywordsByName(@Header(TYPE_VALUE) String movieName, @Body Response<Movie> movie){
-
-        List<MovieKeyword> keywords = Arrays.asList(MovieKeyword.builder().id(616).name("witch").build(),
-                MovieKeyword.builder().id(1585).name("snake").build(),
-                MovieKeyword.builder().id(1964).name("cave").build());
-
-        movie.getBody().setKeywords(keywords);
-        return movie;
-    }
-
-
 }

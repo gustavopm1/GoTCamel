@@ -31,14 +31,7 @@ public class MovieKeywordsApiRouteTest extends AbstractRouteTest {
 
         Response<Movie> returned = sendMessage(
                 configuration.getRoutes().getInbound().getMovie(),
-                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.MOVIEID).value("1911").build() ).user("testuser").build(),
-                NO_HEADERS,
-                (new TypeReference<Response<Movie>>(){})
-        );
-
-        returned = sendMessage(
-                configuration.getRoutes().getInbound().getMovie(),
-                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.KEYWORDSMOVIEID).value(Integer.toString(returned.getBody().getId())).build() ).user("testuser").build(),
+                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.KEYWORDSMOVIEID).value("1911").build() ).user("testuser").build(),
                 NO_HEADERS,
                 (new TypeReference<Response<Movie>>(){})
         );

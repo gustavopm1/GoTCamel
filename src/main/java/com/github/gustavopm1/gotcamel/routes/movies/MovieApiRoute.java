@@ -79,24 +79,9 @@ public class MovieApiRoute extends MainRouteBuilder {
                         .bean(movieCastService,"getMovieCastById").id("getMovieCastByIdServiceBean")
                     .endChoice()
 
-                    .when(isFindMovieCastByMovieName())
-                        .bean(movieSearchService,"getMovie").id("getMovieServiceOnCastNameBean")
-                        .bean(movieCastService,"getMovieCastByName").id("getMovieCastByNameServiceBean")
-                    .endChoice()
-
                     .when(isFindMovieCrewByMovieId())
                         .bean(movieSearchByIdService,"getMovieById").id("getMovieServiceOnCrewIdBean")
                         .bean(movieCrewService,"getMovieCrewById").id("getMovieCrewByIdServiceBean")
-                    .endChoice()
-
-                    .when(isFindMovieCrewByMovieName())
-                        .bean(movieSearchService,"getMovie").id("getMovieServiceOnCrewNameBean")
-                        .bean(movieCrewService,"getMovieCrewByName").id("getMovieCrewByNameServiceBean")
-                    .endChoice()
-
-                    .when(isFindMovieKeywordsByMovieName())
-                        .bean(movieSearchService,"getMovie").id("getMovieServiceOnKeywordsNameBean")
-                        .bean(movieKeywordsService,"getMovieKeywordsByName").id("getMovieKeywordsByNameServiceBean")
                     .endChoice()
 
                     .when(isFindMovieKeywordsByMovieId())

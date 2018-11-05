@@ -33,14 +33,7 @@ public class MovieCastApiRouteTest extends AbstractRouteTest {
 
         Response<Movie> returned = sendMessage(
                 configuration.getRoutes().getInbound().getMovie(),
-                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.MOVIEID).value("1911").build() ).user("testuser").build(),
-                NO_HEADERS,
-                (new TypeReference<Response<Movie>>(){})
-        );
-
-        returned = sendMessage(
-                configuration.getRoutes().getInbound().getMovie(),
-                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.CASTMOVIEID).value(Integer.toString(returned.getBody().getId())).build() ).user("testuser").build(),
+                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.CASTMOVIEID).value("1911").build() ).user("testuser").build(),
                 NO_HEADERS,
                 (new TypeReference<Response<Movie>>(){})
         );
@@ -72,38 +65,5 @@ public class MovieCastApiRouteTest extends AbstractRouteTest {
                                 .character("Herger the Joyous")
                                 .profile_path("/zc8O7O8l8wtX3EQmDV7jWOPjmHJ.jpg")
                                 .build()));
-    }
-
-    @Test
-    public void testRouteCast() throws IOException {
-
-        Response<List<MovieCast>> returned = sendMessage(
-                configuration.getRoutes().getInbound().getMovieCast(),
-                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.CASTMOVIENAME).value("Twin Peaks: Fire Walk with Me").build() ).user("testuser").build(),
-                NO_HEADERS,
-                (new TypeReference<Response<List<MovieCast>>>(){})
-        );
-
-        assertThat(returned)
-                .isNotNull()
-                .hasFieldOrPropertyWithValue("found",true)
-                .hasFieldOrProperty("body");
-
-        assertThat(returned.getBody())
-                .isNotNull()
-                .isInstanceOf(ArrayList.class)
-                .contains(MovieCast.builder()
-                        .id(6677)
-                        .name("Kyle MacLachlan")
-                        .character("Dale Cooper")
-                        .profile_path("/7DnMuDlSdpycAQQxOIDmV66qerc.jpg")
-                        .build())
-                .contains(MovieCast.builder()
-                        .id(6726)
-                        .name("Sheryl Lee")
-                        .character("Laura Palmer")
-                        .profile_path("/6mUGpZGzDiYevpWLM7AjlTN8UgV.jpg")
-                        .build());
-
     }
 }
