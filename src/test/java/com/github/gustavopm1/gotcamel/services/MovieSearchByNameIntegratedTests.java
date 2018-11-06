@@ -1,5 +1,6 @@
 package com.github.gustavopm1.gotcamel.services;
 
+import com.github.gustavopm1.gotcamel.exceptions.movie.MovieNotFoundException;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.SearchType;
 import com.github.gustavopm1.gotcamel.models.movie.Movie;
@@ -26,7 +27,7 @@ public class MovieSearchByNameIntegratedTests {
     MovieSearchService movieSearchService;
 
     @Test
-    public void integratedTestGETMovieByName(){
+    public void integratedTestGETMovieByName() throws MovieNotFoundException {
         Movie movie = Movie.builder()
                 .id(1911)
                 .runtime(102)

@@ -51,7 +51,6 @@
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-jpa:1.11.15.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:1.13.15.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:4.3.19.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.7.25" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aspects:4.3.19.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-spring-boot:2.21.2" level="project" />
@@ -85,6 +84,15 @@
     <orderEntry type="library" name="Maven: org.apache.camel:camel-jackson:2.21.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-core:2.21.2" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.8.11" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.activemq:activemq-camel:5.9.1" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-jms:2.12.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.activemq:activemq-spring:5.14.5" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.xbean:xbean-spring:4.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-jta_1.0.1B_spec:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-pool2:2.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.activemq:activemq-pool:5.14.5" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.activemq:activemq-jms-pool:5.14.5" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.6" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.11.2" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.8.0" level="project" />

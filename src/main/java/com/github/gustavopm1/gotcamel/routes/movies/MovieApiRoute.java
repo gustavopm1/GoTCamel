@@ -2,7 +2,10 @@ package com.github.gustavopm1.gotcamel.routes.movies;
 
 import com.github.gustavopm1.gotcamel.GotCamelConstants;
 import com.github.gustavopm1.gotcamel.configuration.GotCamelConfiguration;
+import com.github.gustavopm1.gotcamel.exceptions.movie.MovieNotFoundException;
 import com.github.gustavopm1.gotcamel.marshallers.movie.MovieMarshaller;
+import com.github.gustavopm1.gotcamel.models.Response;
+import com.github.gustavopm1.gotcamel.models.movie.Movie;
 import com.github.gustavopm1.gotcamel.routes.MainRouteBuilder;
 import com.github.gustavopm1.gotcamel.services.movie.*;
 import lombok.Setter;
@@ -111,6 +114,21 @@ public class MovieApiRoute extends MainRouteBuilder {
 
     @Override
     public void routeExceptions(RouteDefinition processor) {
+
+        processor
+            .onException(MovieNotFoundException.class)
+                .handled(true)
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
+                        log.error("Error: Movie not found");
+                        exchange.getOut().setBody(Response.<Movie>builder().found(false).build());
+                        exchange.getIn().setBody(Response.<Movie>builder().found(false).build());
+                    }
+                })
+                .marshal().json(JsonLibrary.Jackson,true)
+                .convertBodyTo(String.class)
+            .end();
 
     }
 }

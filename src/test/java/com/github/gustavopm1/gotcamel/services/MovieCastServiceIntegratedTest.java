@@ -1,5 +1,6 @@
 package com.github.gustavopm1.gotcamel.services;
 
+import com.github.gustavopm1.gotcamel.exceptions.movie.MovieNotFoundException;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.SearchType;
 import com.github.gustavopm1.gotcamel.models.movie.Movie;
@@ -32,7 +33,7 @@ public class MovieCastServiceIntegratedTest {
     MovieSearchByIdService movieSearchByIdService;
 
     @Test
-    public void integratedTestGETMovieCastById(){
+    public void integratedTestGETMovieCastById() throws MovieNotFoundException {
         Movie movie = Movie.builder()
                 .id(1911)
                 .runtime(102)

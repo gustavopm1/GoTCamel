@@ -2,6 +2,7 @@ package com.github.gustavopm1.gotcamel.services.movie;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.gustavopm1.gotcamel.configuration.GotCamelConfiguration;
+import com.github.gustavopm1.gotcamel.exceptions.movie.MovieNotFoundException;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.movie.Movie;
 import com.github.gustavopm1.gotcamel.services.AbstractRequestService;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,24 +44,32 @@ public class MovieSearchByIdService extends AbstractRequestService {
         return new HashMap<>();
     }
 
-    public Response<Movie> getMovieById(@Header (TYPE_VALUE) String id, @Headers Map<String, Object> headers){
+    public Response<Movie> getMovieById(@Header (TYPE_VALUE) String id, @Headers Map<String, Object> headers) throws MovieNotFoundException {
 
-        ResponseEntity<String> response = doGet(headers);
-        System.out.println("Response::" + response.getBody());
-        if(response.getStatusCode().equals(HttpStatus.OK)){
-            try {
-                Movie movie=  new ObjectMapper().readValue(response.getBody(), Movie.class);
-                return Response.<Movie>builder()
-                        .found(true)
-                        .body(movie)
-                        .build();
-            }catch (Exception e){
-                log.error("Erro ao parsear filme!", e);
+        try {
+            ResponseEntity<String> response = doGet(headers);
+
+            if (response.getStatusCode().equals(HttpStatus.OK)) {
+                try {
+                    Movie movie = new ObjectMapper().readValue(response.getBody(), Movie.class);
+                    return Response.<Movie>builder()
+                            .found(true)
+                            .body(movie)
+                            .build();
+                } catch (Exception e) {
+                    log.error("Erro ao parsear filme!", e);
+                }
             }
-        }
 
-        return Response.<Movie>builder()
-                .found(false)
-                .build();
+            return Response.<Movie>builder()
+                    .found(false)
+                    .build();
+        } catch (HttpClientErrorException e) {
+            log.error("HttpClientErrorException while doing get", e);
+            throw new MovieNotFoundException(e.getMessage());
+        } catch (Exception e) {
+            log.error("Error while doing get", e);
+            throw new MovieNotFoundException(e.getMessage());
+        }
     }
 }

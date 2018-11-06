@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.gustavopm1.gotcamel.configuration.GotCamelConfiguration;
+import com.github.gustavopm1.gotcamel.exceptions.movie.MovieNotFoundException;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.SearchType;
 import com.github.gustavopm1.gotcamel.models.movie.Movie;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -53,36 +55,46 @@ public class MovieSearchService extends AbstractRequestService {
         return parameters;
     }
 
-    public Response<Movie> getMovie(@Header(TYPE_VALUE) String movieName, @Headers Map<String,Object> headers){
+    public Response<Movie> getMovie(@Header(TYPE_VALUE) String movieName, @Headers Map<String,Object> headers) throws MovieNotFoundException {
 
-        ResponseEntity<String> response = doGet(headers);
+        try {
+            ResponseEntity<String> response = doGet(headers);
 
-        if(response.getStatusCode().equals(HttpStatus.OK)){
-            try {
+            if (response.getStatusCode().equals(HttpStatus.OK)) {
+                try {
 
-                JsonNode json = new ObjectMapper().readTree(response.getBody());
+                    JsonNode json = new ObjectMapper().readTree(response.getBody());
 
-                List<Movie> movies = new ObjectMapper().readValue(json.get("results").toString(), new TypeReference<List<Movie>>(){});
+                    List<Movie> movies = new ObjectMapper().readValue(json.get("results").toString(), new TypeReference<List<Movie>>() {
+                    });
 
-                Response<Movie> responseMovie = Response.<Movie>builder()
-                        .found(true)
-                        .body(movies.get(0))
-                        .build();
+                    Response<Movie> responseMovie = Response.<Movie>builder()
+                            .found(true)
+                            .body(movies.get(0))
+                            .build();
 
 
-                headers.put(TYPE_NAME, SearchType.MOVIEID);
-                headers.put(TYPE_VALUE, responseMovie.getBody().getId());
+                    headers.put(TYPE_NAME, SearchType.MOVIEID);
+                    headers.put(TYPE_VALUE, responseMovie.getBody().getId());
 
-                return movieSearchByIdService.getMovieById(Integer.toString(movies.get(0).getId()),headers);
+                    return movieSearchByIdService.getMovieById(Integer.toString(movies.get(0).getId()), headers);
 
-            }catch (Exception e){
-                log.error("Erro ao parsear filme!", e);
+                } catch (Exception e) {
+                    log.error("Erro ao parsear filme!", e);
+                }
             }
+
+            return Response.<Movie>builder()
+                    .found(false)
+                    .build();
+        } catch (HttpClientErrorException e){
+            log.error("HttpClientErrorException while doing get",e);
+            throw new MovieNotFoundException(e.getMessage());
+        } catch (Exception e) {
+            log.error("Error while doing get",e);
+            throw new MovieNotFoundException(e.getMessage());
         }
 
-        return Response.<Movie>builder()
-                .found(false)
-                .build();
     }
 
 }

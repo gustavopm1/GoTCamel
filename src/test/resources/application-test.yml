@@ -4,3 +4,15 @@ logging:
       github:
         gustavopm1:
           gotcamel: TRACE
+
+com:
+  gotcamel:
+    routes:
+      inbound:
+        movie: activemq:queue:movie.requests?exchangePattern=InOut
+        movieCast: direct:movieCast
+        person: direct:person
+      outbound:
+        movie: ''
+        movieCast: ''
+        person: ''

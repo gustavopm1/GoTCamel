@@ -54,7 +54,10 @@ public abstract class MainRouteBuilder extends RouteBuilder {
     private void logDuration(Exchange exchange){
         final LocalDateTime start = (LocalDateTime)exchange.getIn().getHeaders().get(GotCamelConstants.ROUTE_START_KEY);
         final LocalDateTime end = (LocalDateTime)exchange.getIn().getHeaders().get(GotCamelConstants.ROUTE_END_KEY);
-        exchange.getIn().setHeader(GotCamelConstants.ROUTE_DURATION, Duration.between(start,end).toString());
+        if(start == null || end == null)
+            exchange.getIn().setHeader(GotCamelConstants.ROUTE_DURATION, 0);
+        else
+            exchange.getIn().setHeader(GotCamelConstants.ROUTE_DURATION, Duration.between(start,end).toString());
     }
 
 }

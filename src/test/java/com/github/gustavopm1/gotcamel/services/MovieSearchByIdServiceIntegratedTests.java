@@ -1,6 +1,7 @@
 package com.github.gustavopm1.gotcamel.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.gustavopm1.gotcamel.exceptions.movie.MovieNotFoundException;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.SearchType;
 import com.github.gustavopm1.gotcamel.models.movie.Crew;
@@ -44,7 +45,7 @@ public class MovieSearchByIdServiceIntegratedTests {
     MovieCrewService movieCrewService;
 
     @Test
-    public void integratedTestGETMovieById(){
+    public void integratedTestGETMovieById() throws MovieNotFoundException {
 
         Movie movie = Movie.builder()
                 .id(1911)
@@ -66,7 +67,7 @@ public class MovieSearchByIdServiceIntegratedTests {
         }
 
         @Test
-        public void integratedTestGETFullMovieById(){
+        public void integratedTestGETFullMovieById() throws MovieNotFoundException {
 
             Movie movie = Movie.builder()
                     .id(1911)
