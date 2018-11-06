@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @Slf4j
-@ActiveProfiles({"test","prod"})
+@ActiveProfiles({"route","prod"})
 public class MovieCrewApiRouteTest extends AbstractRouteTest {
 
     @Test

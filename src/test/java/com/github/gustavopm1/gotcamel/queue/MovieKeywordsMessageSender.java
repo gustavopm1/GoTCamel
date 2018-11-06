@@ -1,47 +1,38 @@
-package com.github.gustavopm1.gotcamel.routes.movies;
+package com.github.gustavopm1.gotcamel.queue;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.github.gustavopm1.gotcamel.models.Request;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.SearchType;
 import com.github.gustavopm1.gotcamel.models.movie.Movie;
 import com.github.gustavopm1.gotcamel.models.movie.MovieKeyword;
 import com.github.gustavopm1.gotcamel.models.movie.TypeValueData;
-import com.github.gustavopm1.gotcamel.routes.AbstractRouteTest;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.jms.JMSException;
 import java.io.IOException;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
 @RunWith(SpringRunner.class)
-@Slf4j
-@ActiveProfiles({"route","prod"})
-public class MovieKeywordsApiRouteTest extends AbstractRouteTest {
+@SpringBootTest
+@ActiveProfiles({"test","prod"})
+public class MovieKeywordsMessageSender extends AbstractQueueTest {
 
     @Test
-    public void testRouteSetKeywordsById() throws IOException {
+    public void shouldSendMessageToQueueAndGetBackResultMovieKeywordsByID() throws IOException, JMSException, ClassNotFoundException {
+        String movieID = "1911";
+        Response<Movie> response = exchange("movie.requests", TypeValueData.builder().type(SearchType.KEYWORDSMOVIEID).value(movieID).build());
 
-        Response<Movie> returned = sendMessage(
-                configuration.getRoutes().getInbound().getMovie(),
-                Request.<TypeValueData>builder().body( TypeValueData.builder().type(SearchType.KEYWORDSMOVIEID).value("1911").build() ).user("testuser").build(),
-                NO_HEADERS,
-                (new TypeReference<Response<Movie>>(){})
-        );
-
-        assertThat(returned)
+        assertThat(response)
                 .isNotNull()
-                .hasFieldOrPropertyWithValue("found",true)
-                .hasFieldOrProperty("body");
+                .isInstanceOf(Response.class)
+                .hasFieldOrPropertyWithValue("found",true);
 
-        assertThat(returned.getBody())
+        assertThat(response.getBody())
                 .isNotNull()
                 .isInstanceOf(Movie.class)
                 .hasFieldOrPropertyWithValue("original_title","The 13th Warrior")
@@ -49,4 +40,5 @@ public class MovieKeywordsApiRouteTest extends AbstractRouteTest {
                         MovieKeyword.builder().id(1585).name("snake").build(),
                         MovieKeyword.builder().id(1964).name("cave").build()));
     }
+
 }

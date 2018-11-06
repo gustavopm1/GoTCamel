@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Profile("test")
-@ActiveProfiles("test")
+@ActiveProfiles("route")
 public abstract class AbstractRouteTest {
 
     @Autowired protected ProducerTemplate template;

@@ -3,7 +3,7 @@
 
 # Description
 
-This application's goals are to send requests and receive responses through Apache Camel. It will be possible to request information about movies, actors, actresses, directors and other members of the movie cast and crew. This was developed with learning purposes, in order to study more about Apache Camel, ActiveMQ and Spring Boot.
+This application's goals are to send requests and receive responses through Apache Camel. It's possible to request information about movies, actors, actresses, directors and other members of the movie cast and crew. This was developed with learning purposes, in order to study more about Apache Camel, ActiveMQ and Spring Boot.
 The requests are made using "The Movie Database"© (https://www.themoviedb.org/) API.
 
 # Stack
