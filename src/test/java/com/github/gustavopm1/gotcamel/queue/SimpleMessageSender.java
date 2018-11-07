@@ -3,14 +3,12 @@ package com.github.gustavopm1.gotcamel.queue;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.SearchType;
 import com.github.gustavopm1.gotcamel.models.movie.*;
-import com.github.gustavopm1.gotcamel.test.annotations.MethodName;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.jms.JMSException;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -24,9 +22,9 @@ public class SimpleMessageSender extends AbstractQueueTest {
 
 
     @Test
-    public void shouldSendMessageToQueueAndGetBackResultNotFound() throws IOException, JMSException, ClassNotFoundException {
+    public void shouldSendMessageToQueueAndGetBackResultNotFound() throws IOException{
         String movieID = "1191";
-        Response<Movie> response = exchange("movie.requests", TypeValueData.builder().type(SearchType.MOVIEID).value(movieID).build());
+        Response<Movie> response = exchangeMovie("movie.requests", TypeValueData.builder().type(SearchType.MOVIEID).value(movieID).build());
 
         assertThat(response)
                 .isNotNull()
@@ -35,9 +33,9 @@ public class SimpleMessageSender extends AbstractQueueTest {
     }
 
     @Test
-    public void shouldSendMessageToQueueAndGetBackResultByID() throws IOException, JMSException, ClassNotFoundException {
+    public void shouldSendMessageToQueueAndGetBackResultByID() throws IOException{
         String movieID = "1911";
-        Response<Movie> response = exchange("movie.requests", TypeValueData.builder().type(SearchType.MOVIEID).value(movieID).build());
+        Response<Movie> response = exchangeMovie("movie.requests", TypeValueData.builder().type(SearchType.MOVIEID).value(movieID).build());
 
         assertThat(response)
                 .isNotNull()
@@ -51,9 +49,9 @@ public class SimpleMessageSender extends AbstractQueueTest {
     }
 
     @Test
-    public void shouldSendMessageToQueueAndGetBackResultByName() throws IOException, JMSException, ClassNotFoundException {
+    public void shouldSendMessageToQueueAndGetBackResultByName() throws IOException {
         String movieName = "The 13th Warrior";
-        Response<Movie> response = exchange("movie.requests", TypeValueData.builder().type(SearchType.MOVIENAME).value(movieName).build());
+        Response<Movie> response = exchangeMovie("movie.requests", TypeValueData.builder().type(SearchType.MOVIENAME).value(movieName).build());
 
         assertThat(response)
                 .isNotNull()
@@ -67,9 +65,9 @@ public class SimpleMessageSender extends AbstractQueueTest {
     }
 
     @Test
-    public void shouldSendMessageToQueueAndGetBackResulFullMovietByID() throws IOException, JMSException, ClassNotFoundException {
+    public void shouldSendMessageToQueueAndGetBackResulFullMovietByID() throws IOException {
         String movieID = "1911";
-        Response<Movie> response = exchange("movie.requests", TypeValueData.builder().type(SearchType.FULLMOVIE).value(movieID).build());
+        Response<Movie> response = exchangeMovie("movie.requests", TypeValueData.builder().type(SearchType.FULLMOVIE).value(movieID).build());
 
         assertThat(response)
                 .isNotNull()

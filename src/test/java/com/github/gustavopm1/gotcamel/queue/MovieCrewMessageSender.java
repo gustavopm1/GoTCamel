@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.jms.JMSException;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -23,9 +22,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MovieCrewMessageSender extends AbstractQueueTest {
 
     @Test
-    public void shouldSendMessageToQueueAndGetBackResultMovieCrewByID() throws IOException, JMSException, ClassNotFoundException {
+    public void shouldSendMessageToQueueAndGetBackResultMovieCrewByID() throws IOException {
         String movieID = "1911";
-        Response<Movie> response = exchange("movie.requests", TypeValueData.builder().type(SearchType.CREWMOVIEID).value(movieID).build());
+        Response<Movie> response = exchangeMovie("movie.requests", TypeValueData.builder().type(SearchType.CREWMOVIEID).value(movieID).build());
 
         assertThat(response)
                 .isNotNull()

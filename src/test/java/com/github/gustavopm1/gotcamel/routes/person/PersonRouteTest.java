@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.gustavopm1.gotcamel.models.Request;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.SearchType;
-import com.github.gustavopm1.gotcamel.models.movie.Movie;
 import com.github.gustavopm1.gotcamel.models.movie.TypeValueData;
 import com.github.gustavopm1.gotcamel.models.person.Person;
 import com.github.gustavopm1.gotcamel.routes.AbstractRouteTest;
@@ -22,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @Slf4j
-@ActiveProfiles({"test","prod"})
+@ActiveProfiles({"route","prod"})
 public class PersonRouteTest extends AbstractRouteTest {
 
     @Test

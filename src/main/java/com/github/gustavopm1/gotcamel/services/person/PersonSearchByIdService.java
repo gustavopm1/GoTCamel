@@ -7,7 +7,6 @@ import com.github.gustavopm1.gotcamel.models.person.Person;
 import com.github.gustavopm1.gotcamel.services.AbstractRequestService;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.camel.Body;
 import org.apache.camel.Header;
 import org.apache.camel.Headers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.PERSON_ID;
-import static com.github.gustavopm1.gotcamel.GotCamelConstants.PERSON_NAME;
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_VALUE;
 
 @Service

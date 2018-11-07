@@ -10,7 +10,6 @@ com:
     routes:
       inbound:
         movie: direct:movies
-        movieCast: direct:movieCast
         person: direct:person
       outbound:
         movie: ''

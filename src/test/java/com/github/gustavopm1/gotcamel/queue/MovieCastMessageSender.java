@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.jms.JMSException;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -23,9 +22,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MovieCastMessageSender extends AbstractQueueTest  {
 
     @Test
-    public void shouldSendMessageToQueueAndGetBackResultMovieCastByID() throws IOException, JMSException, ClassNotFoundException {
+    public void shouldSendMessageToQueueAndGetBackResultMovieCastByID() throws IOException {
         String movieID = "1911";
-        Response<Movie> response = exchange("movie.requests", TypeValueData.builder().type(SearchType.CASTMOVIEID).value(movieID).build());
+        Response<Movie> response = exchangeMovie("movie.requests", TypeValueData.builder().type(SearchType.CASTMOVIEID).value(movieID).build());
 
         assertThat(response)
                 .isNotNull()

@@ -11,16 +11,13 @@ com:
     baseUrl: https://api.themoviedb.org/3/
     routes:
       inbound:
-        movie: direct:movies
-        movieCast: direct:movieCast
-        person: direct:person
+        movie: activemq:queue:movie.requests?exchangePattern=InOut
+        person: activemq:queue:person.requests?exchangePattern=InOut
       outbound:
         movie: ''
-        movieCast: ''
         person: ''
     ids:
       movie: movies
-      movieCast: movieCast
       person: person
     services:
       movieUrl: movie/:id
