@@ -55,9 +55,9 @@ In order to create a new route follow the steps ahead:
     		
 You can follow the examples that are already done at the project.
 
-# Unity Tests
+# Unit Tests
 
-To create a unity test do as follow:
+To create a unit test do as follow:
 1) Create a Response of the type you are requesting like the following example:
 
         Response<Movie> returned = sendMessage(

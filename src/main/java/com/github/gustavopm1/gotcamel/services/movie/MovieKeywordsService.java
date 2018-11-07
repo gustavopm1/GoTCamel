@@ -45,7 +45,7 @@ public class MovieKeywordsService extends AbstractRequestService {
     }
 
 
-    public Response<Movie> getMovieKeywordsById(@Header(TYPE_VALUE) String id, @Body Response<Movie> movie, @Headers Map<String,Object> headers){
+    public Response<Movie> getMovieKeywordsById(@Header(TYPE_VALUE) String id, @Body Response<Movie> movie, @Headers Map<String,Object> headers) throws InterruptedException {
 
         ResponseEntity<String> response = doGet(headers);
         if(response.getStatusCode().equals(HttpStatus.OK)){

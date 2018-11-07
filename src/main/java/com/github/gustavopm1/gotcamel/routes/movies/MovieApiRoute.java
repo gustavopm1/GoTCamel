@@ -3,6 +3,7 @@ package com.github.gustavopm1.gotcamel.routes.movies;
 import com.github.gustavopm1.gotcamel.GotCamelConstants;
 import com.github.gustavopm1.gotcamel.configuration.GotCamelConfiguration;
 import com.github.gustavopm1.gotcamel.exceptions.movie.MovieNotFoundException;
+import com.github.gustavopm1.gotcamel.exceptions.movie.TooManyRequestsException;
 import com.github.gustavopm1.gotcamel.marshallers.movie.MovieMarshaller;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.movie.Movie;
@@ -126,9 +127,20 @@ public class MovieApiRoute extends MainRouteBuilder {
                         exchange.getIn().setBody(Response.<Movie>builder().found(false).build());
                     }
                 })
+             .onException(TooManyRequestsException.class)
+                .handled(true)
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
+                        log.error("Error: Too many requests");
+                        exchange.getOut().setBody(Response.<Movie>builder().found(false).build());
+                        exchange.getIn().setBody(Response.<Movie>builder().found(false).build());
+                    }
+                })
                 .marshal().json(JsonLibrary.Jackson,true)
                 .convertBodyTo(String.class)
-            .end();
+                .end();
+
 
     }
 }

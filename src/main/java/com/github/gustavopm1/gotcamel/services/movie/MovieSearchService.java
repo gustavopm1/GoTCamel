@@ -55,9 +55,8 @@ public class MovieSearchService extends AbstractRequestService {
         return parameters;
     }
 
-    public Response<Movie> getMovie(@Header(TYPE_VALUE) String movieName, @Headers Map<String,Object> headers) throws MovieNotFoundException {
+    public Response<Movie> getMovie(@Header(TYPE_VALUE) String movieName, @Headers Map<String,Object> headers) {
 
-        try {
             ResponseEntity<String> response = doGet(headers);
 
             if (response.getStatusCode().equals(HttpStatus.OK)) {
@@ -87,13 +86,7 @@ public class MovieSearchService extends AbstractRequestService {
             return Response.<Movie>builder()
                     .found(false)
                     .build();
-        } catch (HttpClientErrorException e){
-            log.error("HttpClientErrorException while doing get",e);
-            throw new MovieNotFoundException(e.getMessage());
-        } catch (Exception e) {
-            log.error("Error while doing get",e);
-            throw new MovieNotFoundException(e.getMessage());
-        }
+
 
     }
 

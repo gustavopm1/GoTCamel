@@ -1,6 +1,7 @@
 package com.github.gustavopm1.gotcamel.services;
 
 import com.github.gustavopm1.gotcamel.configuration.GotCamelConfiguration;
+import com.github.gustavopm1.gotcamel.exceptions.movie.TooManyRequestsException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
@@ -32,20 +34,28 @@ public abstract class AbstractRequestService {
     public abstract Map<String,String> getParams(Map<String, Object> params);
 
 
-    public ResponseEntity<String> doGet(Map<String, Object> headers){
+    public ResponseEntity<String> doGet(Map<String, Object> headers) {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         getHeaders(headers)
             .entrySet()
             .forEach( entry ->  httpHeaders.add(entry.getKey(),entry.getValue()));
+        try {
+            return new RestTemplate()
+                    .exchange(
+                            configuration.getBaseUrl().concat(getURL(headers)).concat("?").concat(buildUrl(getParams(headers))),
+                            HttpMethod.GET,
+                            new HttpEntity(httpHeaders),
+                            String.class,
+                            buildParams(getParams(headers)));
+        }catch (HttpClientErrorException e){
+            if(e.getMessage().contains("429"))
+                return ResponseEntity.status(429).build();
+            if(e.getMessage().contains("404"))
+                return ResponseEntity.notFound().build();
 
-        return new RestTemplate()
-                .exchange(
-                    configuration.getBaseUrl().concat(getURL(headers)).concat("?").concat(buildUrl(getParams(headers))),
-                    HttpMethod.GET,
-                    new HttpEntity(httpHeaders),
-                    String.class,
-                    buildParams(getParams(headers)));
+            return ResponseEntity.noContent().build();
+        }
     }
 
     private String buildUrl(Map<String, String> headers){

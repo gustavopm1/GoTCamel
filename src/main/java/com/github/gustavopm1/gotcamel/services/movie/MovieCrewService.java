@@ -49,7 +49,7 @@ public class MovieCrewService extends AbstractRequestService {
         return new HashMap<>();
     }
 
-    public Response<Movie> getMovieCrewById(@Header(TYPE_VALUE) String id, @Body Response<Movie> movie, @Headers Map<String,Object> headers){
+    public Response<Movie> getMovieCrewById(@Header(TYPE_VALUE) String id, @Body Response<Movie> movie, @Headers Map<String,Object> headers) throws InterruptedException {
         ResponseEntity<String> response = doGet(headers);
         if(response.getStatusCode().equals(HttpStatus.OK)){
             try {

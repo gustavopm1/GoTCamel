@@ -26,6 +26,7 @@ import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_NAME;
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -61,13 +62,15 @@ public class MovieSearchByIdServiceIntegratedTests {
 
         Response<Movie> response = movieSearchByIdService.getMovieById("1911",headers);
 
+        assertTrue(response.isFound());
+
         assertEquals(movie.getId(),response.getBody().getId());
         assertEquals(movie.getOriginal_title(), response.getBody().getOriginal_title());
 
         }
 
         @Test
-        public void integratedTestGETFullMovieById() throws MovieNotFoundException {
+        public void integratedTestGETFullMovieById() throws MovieNotFoundException, InterruptedException {
 
             Movie movie = Movie.builder()
                     .id(1911)

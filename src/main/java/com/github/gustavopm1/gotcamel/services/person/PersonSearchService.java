@@ -56,7 +56,7 @@ public class PersonSearchService extends AbstractRequestService {
     }
 
 
-    public Response<Person> getPerson(@Header(TYPE_VALUE) String personName, @Headers Map<String,Object> headers){
+    public Response<Person> getPerson(@Header(TYPE_VALUE) String personName, @Headers Map<String,Object> headers) throws InterruptedException {
 
         ResponseEntity<String> response = doGet(headers);
 

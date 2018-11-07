@@ -17,6 +17,7 @@ import java.util.HashMap;
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_NAME;
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_VALUE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -42,6 +43,7 @@ public class MovieSearchByNameIntegratedTests {
 
         Response<Movie> response = movieSearchService.getMovie("The 13th Warrior", headers);
 
+        assertTrue(response.isFound());
         assertEquals(movie.getId(),response.getBody().getId());
 
     }

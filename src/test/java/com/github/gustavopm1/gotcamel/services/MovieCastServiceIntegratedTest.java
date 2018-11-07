@@ -33,7 +33,7 @@ public class MovieCastServiceIntegratedTest {
     MovieSearchByIdService movieSearchByIdService;
 
     @Test
-    public void integratedTestGETMovieCastById() throws MovieNotFoundException {
+    public void integratedTestGETMovieCastById() throws MovieNotFoundException, InterruptedException {
         Movie movie = Movie.builder()
                 .id(1911)
                 .runtime(102)

@@ -47,7 +47,7 @@ public class PersonSearchByIdService extends AbstractRequestService {
     }
 
 
-    public Response<Person> getPersonById(@Header(PERSON_ID) String id, @Headers Map<String, Object> headers) {
+    public Response<Person> getPersonById(@Header(PERSON_ID) String id, @Headers Map<String, Object> headers) throws InterruptedException {
 
         ResponseEntity<String> response = doGet(headers);
         System.out.println("Response::" + response.getBody());

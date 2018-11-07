@@ -29,6 +29,13 @@ public abstract class AbstractRouteTest {
     protected static final Map<String,Object> NO_HEADERS = new HashMap<>();
 
     protected <T> T sendMessage(String endpoint, Object body, Map<String,Object> headers,TypeReference clazz) throws IOException {
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         String jsonResponse = (String)template.sendBodyAndHeaders(
                 endpoint,
                 ExchangePattern.InOut,
