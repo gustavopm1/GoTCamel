@@ -2,7 +2,7 @@ package com.github.gustavopm1.gotcamel.queue;
 
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.SearchType;
-import com.github.gustavopm1.gotcamel.models.movie.*;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

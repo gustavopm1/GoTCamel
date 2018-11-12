@@ -8,11 +8,13 @@ spring:
 
 com:
   gotcamel:
-    baseUrl: https://api.themoviedb.org/3/
+    baseUrlTMDB: https://api.themoviedb.org/3/
+    baseUrlLFM: http://ws.audioscrobbler.com/2.0/
     routes:
       inbound:
         movie: activemq:queue:movie.requests?exchangePattern=InOut
         person: activemq:queue:person.requests?exchangePattern=InOut
+        artist: activemq:queue:artist.requests?exchangePattern=InOut
       outbound:
         movie: ''
         person: ''

@@ -13,6 +13,8 @@ public class GotCamelConfiguration {
     GotCamelIdentifications ids;
     GotCamelIdentifications names;
     GotCamelConfigurationServices services;
-    String apiKey;
-    String baseUrl;
+    String apiKeyTMDB;
+    String apiKeyLFM;
+    String baseUrlTMDB;
+    String baseUrlLFM;
 }

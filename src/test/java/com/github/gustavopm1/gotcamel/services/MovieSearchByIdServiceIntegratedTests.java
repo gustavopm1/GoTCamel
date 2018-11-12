@@ -1,17 +1,16 @@
 package com.github.gustavopm1.gotcamel.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.gustavopm1.gotcamel.exceptions.movie.MovieNotFoundException;
+import com.github.gustavopm1.gotcamel.exceptions.themoviedb.movie.MovieNotFoundException;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.SearchType;
-import com.github.gustavopm1.gotcamel.models.movie.Crew;
-import com.github.gustavopm1.gotcamel.models.movie.Movie;
-import com.github.gustavopm1.gotcamel.models.movie.MovieCast;
-import com.github.gustavopm1.gotcamel.models.movie.MovieKeyword;
-import com.github.gustavopm1.gotcamel.services.movie.MovieCastService;
-import com.github.gustavopm1.gotcamel.services.movie.MovieCrewService;
-import com.github.gustavopm1.gotcamel.services.movie.MovieKeywordsService;
-import com.github.gustavopm1.gotcamel.services.movie.MovieSearchByIdService;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.Crew;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.Movie;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.MovieCast;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.MovieKeyword;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieCastService;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieCrewService;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieKeywordsService;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieSearchByIdService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

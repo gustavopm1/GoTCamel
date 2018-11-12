@@ -1,12 +1,12 @@
 package com.github.gustavopm1.gotcamel.services;
 
-import com.github.gustavopm1.gotcamel.exceptions.movie.MovieNotFoundException;
+import com.github.gustavopm1.gotcamel.exceptions.themoviedb.movie.MovieNotFoundException;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.SearchType;
-import com.github.gustavopm1.gotcamel.models.movie.Crew;
-import com.github.gustavopm1.gotcamel.models.movie.Movie;
-import com.github.gustavopm1.gotcamel.services.movie.MovieCrewService;
-import com.github.gustavopm1.gotcamel.services.movie.MovieSearchByIdService;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.Crew;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.Movie;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieCrewService;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieSearchByIdService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

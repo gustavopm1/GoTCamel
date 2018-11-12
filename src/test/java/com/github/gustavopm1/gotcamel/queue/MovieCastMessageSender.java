@@ -2,9 +2,9 @@ package com.github.gustavopm1.gotcamel.queue;
 
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.SearchType;
-import com.github.gustavopm1.gotcamel.models.movie.Movie;
-import com.github.gustavopm1.gotcamel.models.movie.MovieCast;
-import com.github.gustavopm1.gotcamel.models.movie.TypeValueData;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.Movie;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.MovieCast;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.TypeValueData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
