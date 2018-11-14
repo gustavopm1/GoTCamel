@@ -32,7 +32,7 @@ And it is necessary to create an application-prod.yml file at resources package 
       gotcamel:
         apiKey: yourAPIKey
     	
-To get an API key create an free account at The Movie Database (https://www.themoviedb.org/).
+To get an API key create a free account at The Movie Database (https://www.themoviedb.org/).
 
 
 # Road Map
