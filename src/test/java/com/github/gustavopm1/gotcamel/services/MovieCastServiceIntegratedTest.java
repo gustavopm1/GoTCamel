@@ -1,12 +1,12 @@
 package com.github.gustavopm1.gotcamel.services;
 
-import com.github.gustavopm1.gotcamel.exceptions.movie.MovieNotFoundException;
+import com.github.gustavopm1.gotcamel.exceptions.themoviedb.movie.MovieNotFoundException;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.SearchType;
-import com.github.gustavopm1.gotcamel.models.movie.Movie;
-import com.github.gustavopm1.gotcamel.models.movie.MovieCast;
-import com.github.gustavopm1.gotcamel.services.movie.MovieCastService;
-import com.github.gustavopm1.gotcamel.services.movie.MovieSearchByIdService;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.Movie;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.MovieCast;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieCastService;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieSearchByIdService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class MovieCastServiceIntegratedTest {
     MovieSearchByIdService movieSearchByIdService;
 
     @Test
-    public void integratedTestGETMovieCastById() throws MovieNotFoundException {
+    public void integratedTestGETMovieCastById() throws MovieNotFoundException, InterruptedException {
         Movie movie = Movie.builder()
                 .id(1911)
                 .runtime(102)

@@ -38,4 +38,12 @@ public class Predicates {
         return e-> (e.getIn().getHeader(TYPE_NAME)).equals(SearchType.PERSONNAME);
     }
 
+    public static ComposablePredicate isFindArtistById(){
+        return e-> (e.getIn().getHeader(TYPE_NAME)).equals(SearchType.ARTISTID);
+    }
+
+    public static ComposablePredicate isFindArtistByName(){
+        return e-> (e.getIn().getHeader(TYPE_NAME)).equals(SearchType.ARTISTNAME);
+    }
+
 }

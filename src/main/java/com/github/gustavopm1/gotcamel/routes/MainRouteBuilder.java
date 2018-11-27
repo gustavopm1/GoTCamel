@@ -1,11 +1,14 @@
 package com.github.gustavopm1.gotcamel.routes;
 
 import com.github.gustavopm1.gotcamel.GotCamelConstants;
+import com.github.gustavopm1.gotcamel.configuration.GotCamelConfiguration;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.RouteDefinition;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -21,6 +24,9 @@ public abstract class MainRouteBuilder extends RouteBuilder {
     public abstract void routeConfigure(RouteDefinition processor);
     public abstract void routeExceptions(RouteDefinition processor);
 
+    @Autowired
+    @Setter
+    protected GotCamelConfiguration configuration;
 
     @Override
     public void configure(){

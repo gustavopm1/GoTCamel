@@ -8,5 +8,7 @@ public enum SearchType {
     KEYWORDSMOVIEID,
     PERSONID,
     PERSONNAME,
-    FULLMOVIE
+    FULLMOVIE,
+    ARTISTID,
+    ARTISTNAME
 }

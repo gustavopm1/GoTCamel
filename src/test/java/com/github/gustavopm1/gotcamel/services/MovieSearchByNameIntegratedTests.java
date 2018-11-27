@@ -1,10 +1,10 @@
 package com.github.gustavopm1.gotcamel.services;
 
-import com.github.gustavopm1.gotcamel.exceptions.movie.MovieNotFoundException;
+import com.github.gustavopm1.gotcamel.exceptions.themoviedb.movie.MovieNotFoundException;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.SearchType;
-import com.github.gustavopm1.gotcamel.models.movie.Movie;
-import com.github.gustavopm1.gotcamel.services.movie.MovieSearchService;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.Movie;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieSearchService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,11 @@ import java.util.HashMap;
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_NAME;
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_VALUE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles({"test","prod"})
+@ActiveProfiles({"route","prod"})
 public class MovieSearchByNameIntegratedTests {
 
     @Autowired
@@ -42,6 +43,7 @@ public class MovieSearchByNameIntegratedTests {
 
         Response<Movie> response = movieSearchService.getMovie("The 13th Warrior", headers);
 
+        assertTrue(response.isFound());
         assertEquals(movie.getId(),response.getBody().getId());
 
     }

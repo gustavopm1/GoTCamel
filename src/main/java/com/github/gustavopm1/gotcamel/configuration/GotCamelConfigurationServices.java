@@ -10,4 +10,5 @@ public class GotCamelConfigurationServices {
     String movieUrlName;
     String personUrl;
     String personUrlName;
+    String artistUrlName;
 }

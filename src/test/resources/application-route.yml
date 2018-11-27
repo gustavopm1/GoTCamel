@@ -1,0 +1,17 @@
+logging:
+  level:
+    com:
+      github:
+        gustavopm1:
+          gotcamel: TRACE
+
+com:
+  gotcamel:
+    routes:
+      inbound:
+        movie: direct:movies
+        person: direct:person
+      outbound:
+        movie: ''
+        movieCast: ''
+        person: ''

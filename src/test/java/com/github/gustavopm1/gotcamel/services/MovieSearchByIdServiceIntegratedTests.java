@@ -1,17 +1,16 @@
 package com.github.gustavopm1.gotcamel.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.gustavopm1.gotcamel.exceptions.movie.MovieNotFoundException;
+import com.github.gustavopm1.gotcamel.exceptions.themoviedb.movie.MovieNotFoundException;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.SearchType;
-import com.github.gustavopm1.gotcamel.models.movie.Crew;
-import com.github.gustavopm1.gotcamel.models.movie.Movie;
-import com.github.gustavopm1.gotcamel.models.movie.MovieCast;
-import com.github.gustavopm1.gotcamel.models.movie.MovieKeyword;
-import com.github.gustavopm1.gotcamel.services.movie.MovieCastService;
-import com.github.gustavopm1.gotcamel.services.movie.MovieCrewService;
-import com.github.gustavopm1.gotcamel.services.movie.MovieKeywordsService;
-import com.github.gustavopm1.gotcamel.services.movie.MovieSearchByIdService;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.Crew;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.Movie;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.MovieCast;
+import com.github.gustavopm1.gotcamel.models.themoviedb.movie.MovieKeyword;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieCastService;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieCrewService;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieKeywordsService;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieSearchByIdService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +25,11 @@ import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_NAME;
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles({"test","prod"})
+@ActiveProfiles({"route","prod"})
 public class MovieSearchByIdServiceIntegratedTests {
 
     @Autowired
@@ -61,13 +61,15 @@ public class MovieSearchByIdServiceIntegratedTests {
 
         Response<Movie> response = movieSearchByIdService.getMovieById("1911",headers);
 
+        assertTrue(response.isFound());
+
         assertEquals(movie.getId(),response.getBody().getId());
         assertEquals(movie.getOriginal_title(), response.getBody().getOriginal_title());
 
         }
 
         @Test
-        public void integratedTestGETFullMovieById() throws MovieNotFoundException {
+        public void integratedTestGETFullMovieById() throws MovieNotFoundException, InterruptedException {
 
             Movie movie = Movie.builder()
                     .id(1911)
