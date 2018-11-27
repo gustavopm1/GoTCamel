@@ -33,3 +33,7 @@ com:
       movie: Movie Route
       movieCast: Movie Cast Route
       person: Person Route
+
+management:
+  security:
+    enabled: false
