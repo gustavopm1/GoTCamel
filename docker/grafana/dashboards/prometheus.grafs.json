@@ -1,0 +1,894 @@
+{
+	"annotations": {
+		"list": [
+			{
+				"builtIn": 1,
+				"datasource": "-- Grafana --",
+				"enable": true,
+				"hide": true,
+				"iconColor": "rgba(0, 211, 255, 1)",
+				"name": "Annotations & Alerts",
+				"type": "dashboard"
+			}
+		]
+	},
+	"editable": true,
+	"gnetId": null,
+	"graphTooltip": 0,
+	"id": 1,
+	"links": [],
+	"panels": [
+		{
+			"aliasColors": {},
+			"bars": false,
+			"dashLength": 10,
+			"dashes": false,
+			"datasource": null,
+			"fill": 1,
+			"gridPos": {
+				"h": 9,
+				"w": 8,
+				"x": 0,
+				"y": 0
+			},
+			"id": 20,
+			"legend": {
+				"avg": false,
+				"current": false,
+				"max": false,
+				"min": false,
+				"show": true,
+				"total": false,
+				"values": false
+			},
+			"lines": true,
+			"linewidth": 1,
+			"links": [],
+			"nullPointMode": "null",
+			"percentage": false,
+			"pointradius": 5,
+			"points": false,
+			"renderer": "flot",
+			"seriesOverrides": [],
+			"spaceLength": 10,
+			"stack": false,
+			"steppedLine": false,
+			"targets": [
+				{
+					"expr": "histogram_quantile(0.5, sum(rate(http_request_duration_ms_bucket[1m])) by (le, service, route, method))",
+					"format": "time_series",
+					"intervalFactor": 1,
+					"legendFormat": "{{method}} {{route}}",
+					"refId": "A"
+				}
+			],
+			"thresholds": [],
+			"timeFrom": null,
+			"timeShift": null,
+			"title": "Median Response Time",
+			"tooltip": {
+				"shared": true,
+				"sort": 0,
+				"value_type": "individual"
+			},
+			"type": "graph",
+			"xaxis": {
+				"buckets": null,
+				"mode": "time",
+				"name": null,
+				"show": true,
+				"values": []
+			},
+			"yaxes": [
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				},
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				}
+			],
+			"yaxis": {
+				"align": false,
+				"alignLevel": null
+			}
+		},
+		{
+			"aliasColors": {},
+			"bars": false,
+			"dashLength": 10,
+			"dashes": false,
+			"datasource": null,
+			"fill": 1,
+			"gridPos": {
+				"h": 9,
+				"w": 8,
+				"x": 8,
+				"y": 0
+			},
+			"id": 6,
+			"legend": {
+				"avg": false,
+				"current": false,
+				"max": false,
+				"min": false,
+				"show": true,
+				"total": false,
+				"values": false
+			},
+			"lines": true,
+			"linewidth": 1,
+			"links": [],
+			"nullPointMode": "null",
+			"percentage": false,
+			"pointradius": 5,
+			"points": false,
+			"renderer": "flot",
+			"seriesOverrides": [],
+			"spaceLength": 10,
+			"stack": false,
+			"steppedLine": false,
+			"targets": [
+				{
+					"expr": "avg(rate(http_request_duration_ms_sum[1m]) / rate(http_request_duration_ms_count[1m])) by (service, route, method, code)",
+					"format": "time_series",
+					"interval": "",
+					"intervalFactor": 1,
+					"legendFormat": "{{method}} {{route}}",
+					"refId": "A"
+				}
+			],
+			"thresholds": [],
+			"timeFrom": null,
+			"timeShift": null,
+			"title": "Average Response Time",
+			"tooltip": {
+				"shared": true,
+				"sort": 0,
+				"value_type": "individual"
+			},
+			"type": "graph",
+			"xaxis": {
+				"buckets": null,
+				"mode": "time",
+				"name": null,
+				"show": true,
+				"values": []
+			},
+			"yaxes": [
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				},
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				}
+			],
+			"yaxis": {
+				"align": false,
+				"alignLevel": null
+			}
+		},
+		{
+			"aliasColors": {},
+			"bars": false,
+			"dashLength": 10,
+			"dashes": false,
+			"datasource": "Prometheus",
+			"fill": 1,
+			"gridPos": {
+				"h": 9,
+				"w": 8,
+				"x": 16,
+				"y": 0
+			},
+			"id": 2,
+			"legend": {
+				"alignAsTable": false,
+				"avg": false,
+				"current": false,
+				"max": false,
+				"min": false,
+				"rightSide": false,
+				"show": true,
+				"total": false,
+				"values": false
+			},
+			"lines": true,
+			"linewidth": 1,
+			"links": [],
+			"nullPointMode": "null",
+			"percentage": false,
+			"pointradius": 5,
+			"points": false,
+			"renderer": "flot",
+			"seriesOverrides": [],
+			"spaceLength": 10,
+			"stack": false,
+			"steppedLine": false,
+			"targets": [
+				{
+					"expr": "histogram_quantile(0.95, sum(rate(http_request_duration_ms_bucket[1m])) by (le, service, route, method))",
+					"format": "time_series",
+					"interval": "",
+					"intervalFactor": 1,
+					"legendFormat": "{{method}} {{route}}",
+					"refId": "A"
+				}
+			],
+			"thresholds": [],
+			"timeFrom": null,
+			"timeShift": null,
+			"title": "95th Response Time",
+			"tooltip": {
+				"shared": true,
+				"sort": 0,
+				"value_type": "individual"
+			},
+			"type": "graph",
+			"xaxis": {
+				"buckets": null,
+				"mode": "time",
+				"name": null,
+				"show": true,
+				"values": []
+			},
+			"yaxes": [
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				},
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				}
+			],
+			"yaxis": {
+				"align": false,
+				"alignLevel": null
+			}
+		},
+		{
+			"cacheTimeout": null,
+			"colorBackground": false,
+			"colorValue": true,
+			"colors": [
+				"#d44a3a",
+				"rgba(237, 129, 40, 0.89)",
+				"#299c46"
+			],
+			"datasource": "Prometheus",
+			"decimals": null,
+			"format": "none",
+			"gauge": {
+				"maxValue": 100,
+				"minValue": 0,
+				"show": false,
+				"thresholdLabels": false,
+				"thresholdMarkers": true
+			},
+			"gridPos": {
+				"h": 2,
+				"w": 5,
+				"x": 0,
+				"y": 9
+			},
+			"id": 10,
+			"interval": null,
+			"links": [],
+			"mappingType": 1,
+			"mappingTypes": [
+				{
+					"name": "value to text",
+					"value": 1
+				},
+				{
+					"name": "range to text",
+					"value": 2
+				}
+			],
+			"maxDataPoints": 100,
+			"nullPointMode": "connected",
+			"nullText": null,
+			"postfix": "  times",
+			"postfixFontSize": "50%",
+			"prefix": "Home Listed",
+			"prefixFontSize": "50%",
+			"rangeMaps": [
+				{
+					"from": "null",
+					"text": "N/A",
+					"to": "null"
+				}
+			],
+			"sparkline": {
+				"fillColor": "rgba(31, 118, 189, 0.18)",
+				"full": false,
+				"lineColor": "rgb(31, 120, 193)",
+				"show": false
+			},
+			"tableColumn": "",
+			"targets": [
+				{
+					"expr": "count(http_request_duration_ms_count{method=\"GET\",route=\"/api/company\"}) by (method,route,status)",
+					"format": "time_series",
+					"interval": "",
+					"intervalFactor": 1,
+					"legendFormat": "",
+					"refId": "A"
+				}
+			],
+			"thresholds": "",
+			"title": "Requests",
+			"type": "singlestat",
+			"valueFontSize": "80%",
+			"valueMaps": [
+				{
+					"op": "=",
+					"text": "N/A",
+					"value": "null"
+				}
+			],
+			"valueName": "total"
+		},
+		{
+			"cacheTimeout": null,
+			"colorBackground": false,
+			"colorValue": true,
+			"colors": [
+				"#bf1b00",
+				"#7eb26d",
+				"#299c46"
+			],
+			"datasource": "Prometheus",
+			"decimals": null,
+			"format": "none",
+			"gauge": {
+				"maxValue": 100,
+				"minValue": 0,
+				"show": false,
+				"thresholdLabels": false,
+				"thresholdMarkers": true
+			},
+			"gridPos": {
+				"h": 2,
+				"w": 5,
+				"x": 5,
+				"y": 9
+			},
+			"id": 11,
+			"interval": null,
+			"links": [],
+			"mappingType": 1,
+			"mappingTypes": [
+				{
+					"name": "value to text",
+					"value": 1
+				},
+				{
+					"name": "range to text",
+					"value": 2
+				}
+			],
+			"maxDataPoints": 100,
+			"nullPointMode": "connected",
+			"nullText": null,
+			"postfix": "  companies added",
+			"postfixFontSize": "50%",
+			"prefix": "",
+			"prefixFontSize": "50%",
+			"rangeMaps": [
+				{
+					"from": "null",
+					"text": "N/A",
+					"to": "null"
+				}
+			],
+			"sparkline": {
+				"fillColor": "rgba(31, 118, 189, 0.18)",
+				"full": false,
+				"lineColor": "rgb(31, 120, 193)",
+				"show": false
+			},
+			"tableColumn": "",
+			"targets": [
+				{
+					"expr": "count(http_request_duration_ms_count{method=\"POST\",route=\"/api/company\"}) by (method,route,status)",
+					"format": "time_series",
+					"interval": "",
+					"intervalFactor": 1,
+					"legendFormat": "",
+					"refId": "A"
+				}
+			],
+			"thresholds": "",
+			"title": "Requests",
+			"type": "singlestat",
+			"valueFontSize": "80%",
+			"valueMaps": [
+				{
+					"op": "=",
+					"text": "N/A",
+					"value": "null"
+				}
+			],
+			"valueName": "total"
+		},
+		{
+			"aliasColors": {},
+			"bars": false,
+			"dashLength": 10,
+			"dashes": false,
+			"datasource": null,
+			"fill": 1,
+			"gridPos": {
+				"h": 9,
+				"w": 14,
+				"x": 10,
+				"y": 9
+			},
+			"id": 16,
+			"legend": {
+				"avg": false,
+				"current": false,
+				"max": false,
+				"min": false,
+				"show": true,
+				"total": false,
+				"values": false
+			},
+			"lines": true,
+			"linewidth": 1,
+			"links": [],
+			"nullPointMode": "null",
+			"percentage": false,
+			"pointradius": 5,
+			"points": false,
+			"renderer": "flot",
+			"seriesOverrides": [],
+			"spaceLength": 10,
+			"stack": false,
+			"steppedLine": false,
+			"targets": [
+				{
+					"expr": "sum(rate(http_request_duration_ms_count[1m])) by (route, method)  * 60",
+					"format": "time_series",
+					"interval": "",
+					"intervalFactor": 1,
+					"legendFormat": "{{ method }} @ {{ route }}",
+					"refId": "A"
+				}
+			],
+			"thresholds": [],
+			"timeFrom": null,
+			"timeShift": null,
+			"title": "Requests Per Minute",
+			"tooltip": {
+				"shared": true,
+				"sort": 0,
+				"value_type": "individual"
+			},
+			"type": "graph",
+			"xaxis": {
+				"buckets": null,
+				"mode": "time",
+				"name": null,
+				"show": true,
+				"values": []
+			},
+			"yaxes": [
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				},
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				}
+			],
+			"yaxis": {
+				"align": false,
+				"alignLevel": null
+			}
+		},
+		{
+			"cacheTimeout": null,
+			"colorBackground": false,
+			"colorValue": true,
+			"colors": [
+				"#d44a3a",
+				"#1f78c1",
+				"#299c46"
+			],
+			"datasource": "Prometheus",
+			"decimals": null,
+			"format": "none",
+			"gauge": {
+				"maxValue": 100,
+				"minValue": 0,
+				"show": false,
+				"thresholdLabels": false,
+				"thresholdMarkers": true
+			},
+			"gridPos": {
+				"h": 2,
+				"w": 10,
+				"x": 0,
+				"y": 11
+			},
+			"id": 12,
+			"interval": null,
+			"links": [],
+			"mappingType": 1,
+			"mappingTypes": [
+				{
+					"name": "value to text",
+					"value": 1
+				},
+				{
+					"name": "range to text",
+					"value": 2
+				}
+			],
+			"maxDataPoints": 100,
+			"nullPointMode": "connected",
+			"nullText": null,
+			"postfix": "  times the companies",
+			"postfixFontSize": "50%",
+			"prefix": "They checked",
+			"prefixFontSize": "50%",
+			"rangeMaps": [
+				{
+					"from": "null",
+					"text": "N/A",
+					"to": "null"
+				}
+			],
+			"sparkline": {
+				"fillColor": "rgba(31, 118, 189, 0.18)",
+				"full": false,
+				"lineColor": "rgb(31, 120, 193)",
+				"show": false
+			},
+			"tableColumn": "",
+			"targets": [
+				{
+					"expr": "count(http_request_duration_ms_count{method=\"GET\",route=\"/api/company\"}) by (method,route,status)",
+					"format": "time_series",
+					"interval": "",
+					"intervalFactor": 1,
+					"legendFormat": "",
+					"refId": "A"
+				}
+			],
+			"thresholds": "",
+			"title": "Requests",
+			"type": "singlestat",
+			"valueFontSize": "80%",
+			"valueMaps": [
+				{
+					"op": "=",
+					"text": "N/A",
+					"value": "null"
+				}
+			],
+			"valueName": "total"
+		},
+		{
+			"cacheTimeout": null,
+			"colorBackground": true,
+			"colorValue": false,
+			"colors": [
+				"#d44a3a",
+				"rgba(237, 129, 40, 0.89)",
+				"#299c46"
+			],
+			"datasource": null,
+			"format": "none",
+			"gauge": {
+				"maxValue": 100,
+				"minValue": 0,
+				"show": false,
+				"thresholdLabels": false,
+				"thresholdMarkers": true
+			},
+			"gridPos": {
+				"h": 2,
+				"w": 2,
+				"x": 0,
+				"y": 13
+			},
+			"id": 14,
+			"interval": null,
+			"links": [],
+			"mappingType": 1,
+			"mappingTypes": [
+				{
+					"name": "value to text",
+					"value": 1
+				},
+				{
+					"name": "range to text",
+					"value": 2
+				}
+			],
+			"maxDataPoints": 100,
+			"nullPointMode": "connected",
+			"nullText": null,
+			"postfix": "%",
+			"postfixFontSize": "50%",
+			"prefix": "",
+			"prefixFontSize": "50%",
+			"rangeMaps": [
+				{
+					"from": "null",
+					"text": "N/A",
+					"to": "null"
+				}
+			],
+			"sparkline": {
+				"fillColor": "rgba(31, 118, 189, 0.18)",
+				"full": false,
+				"lineColor": "rgb(31, 120, 193)",
+				"show": false
+			},
+			"tableColumn": "",
+			"targets": [
+				{
+					"expr": "(sum(increase(http_request_duration_ms_count{status=~\"^2..$\"}[1m])) / sum(increase(http_request_duration_ms_count[1m]))) * 100",
+					"format": "time_series",
+					"intervalFactor": 1,
+					"legendFormat": "",
+					"refId": "A"
+				}
+			],
+			"thresholds": "30,90",
+			"title": "Success Rate",
+			"type": "singlestat",
+			"valueFontSize": "80%",
+			"valueMaps": [
+				{
+					"op": "=",
+					"text": "N/A",
+					"value": "null"
+				}
+			],
+			"valueName": "current"
+		},
+		{
+			"cacheTimeout": null,
+			"colorBackground": false,
+			"colorValue": false,
+			"colors": [
+				"#299c46",
+				"rgba(237, 129, 40, 0.89)",
+				"#d44a3a"
+			],
+			"datasource": null,
+			"format": "none",
+			"gauge": {
+				"maxValue": 100,
+				"minValue": 0,
+				"show": false,
+				"thresholdLabels": false,
+				"thresholdMarkers": true
+			},
+			"gridPos": {
+				"h": 2,
+				"w": 2,
+				"x": 2,
+				"y": 13
+			},
+			"id": 18,
+			"interval": null,
+			"links": [],
+			"mappingType": 1,
+			"mappingTypes": [
+				{
+					"name": "value to text",
+					"value": 1
+				},
+				{
+					"name": "range to text",
+					"value": 2
+				}
+			],
+			"maxDataPoints": 100,
+			"nullPointMode": "connected",
+			"nullText": null,
+			"postfix": "",
+			"postfixFontSize": "50%",
+			"prefix": "",
+			"prefixFontSize": "50%",
+			"rangeMaps": [
+				{
+					"from": "null",
+					"text": "N/A",
+					"to": "null"
+				}
+			],
+			"sparkline": {
+				"fillColor": "rgba(31, 118, 189, 0.18)",
+				"full": false,
+				"lineColor": "rgb(31, 120, 193)",
+				"show": false
+			},
+			"tableColumn": "",
+			"targets": [
+				{
+					"expr": "(\n  sum(rate(http_request_duration_ms_bucket{le=\"100\"}[1m])) by (service)\n+\n  sum(rate(http_request_duration_ms_bucket{le=\"300\"}[1m])) by (service)\n) / 2 / sum(rate(http_request_duration_ms_count[1m])) by (service)",
+					"format": "time_series",
+					"intervalFactor": 1,
+					"legendFormat": "",
+					"refId": "A"
+				}
+			],
+			"thresholds": "",
+			"title": "Appdex Score",
+			"type": "singlestat",
+			"valueFontSize": "80%",
+			"valueMaps": [
+				{
+					"op": "=",
+					"text": "N/A",
+					"value": "null"
+				}
+			],
+			"valueName": "avg"
+		},
+		{
+			"aliasColors": {},
+			"bars": false,
+			"dashLength": 10,
+			"dashes": false,
+			"datasource": null,
+			"fill": 1,
+			"gridPos": {
+				"h": 9,
+				"w": 10,
+				"x": 0,
+				"y": 15
+			},
+			"id": 8,
+			"legend": {
+				"avg": false,
+				"current": false,
+				"max": false,
+				"min": false,
+				"show": true,
+				"total": false,
+				"values": false
+			},
+			"lines": true,
+			"linewidth": 1,
+			"links": [],
+			"nullPointMode": "null",
+			"percentage": false,
+			"pointradius": 5,
+			"points": false,
+			"renderer": "flot",
+			"seriesOverrides": [],
+			"spaceLength": 10,
+			"stack": false,
+			"steppedLine": false,
+			"targets": [
+				{
+					"expr": "count(http_request_duration_ms_count) by (method,route,status)",
+					"format": "time_series",
+					"interval": "",
+					"intervalFactor": 1,
+					"legendFormat": "{{ status }} @ {{ method }} {{ route }} ",
+					"refId": "A"
+				}
+			],
+			"thresholds": [],
+			"timeFrom": null,
+			"timeShift": null,
+			"title": "Response Status",
+			"tooltip": {
+				"shared": true,
+				"sort": 0,
+				"value_type": "individual"
+			},
+			"type": "graph",
+			"xaxis": {
+				"buckets": null,
+				"mode": "time",
+				"name": null,
+				"show": true,
+				"values": []
+			},
+			"yaxes": [
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				},
+				{
+					"format": "short",
+					"label": null,
+					"logBase": 1,
+					"max": null,
+					"min": null,
+					"show": true
+				}
+			],
+			"yaxis": {
+				"align": false,
+				"alignLevel": null
+			}
+		}
+	],
+	"refresh": false,
+	"schemaVersion": 16,
+	"style": "dark",
+	"tags": [],
+	"templating": {
+		"list": []
+	},
+	"time": {
+		"from": "now-15m",
+		"to": "now"
+	},
+	"timepicker": {
+		"refresh_intervals": [
+			"5s",
+			"10s",
+			"30s",
+			"1m",
+			""
+		],
+		"time_options": [
+			"5m",
+			"15m",
+			"1h",
+			"6h",
+			"12h",
+			"24h",
+			"2d",
+			"7d",
+			"30d"
+		]
+	},
+	"timezone": "",
+	"title": "Company API",
+	"uid": "gJuRn_Oik",
+	"version": 11
+}

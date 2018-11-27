@@ -1,0 +1,56 @@
+version: '3'
+
+volumes:
+  prometheus_data: {}
+  grafana_data: {}
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.5.0
+    container_name: prometheus
+    volumes:
+      - /d/Paulo/Personal/Dockers/metrics/prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    expose:
+      - 9090
+    ports:
+      - 9090:9090
+
+  grafana:
+    image: grafana/grafana:5.3.4
+    container_name: grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - /d/Paulo/Personal/Dockers/metrics/grafana/datasources:/etc/grafana/datasources
+      - /d/Paulo/Personal/Dockers/metrics/grafana/dashboards:/etc/grafana/dashboards
+      - /d/Paulo/Personal/Dockers/metrics/grafana/setup.sh:/setup.sh
+    entrypoint: /setup.sh
+    environment:
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+
+  queue:
+    image: webcenter/activemq:5.14.3
+    environment:
+      - ACTIVEMQ_CONFIG_MINMEMORY=512
+      - ACTIVEMQ_CONFIG_MAXMEMORY=2048
+      - ACTIVEMQ_ADMIN_LOGIN=roymustang
+      - ACTIVEMQ_ADMIN_PASSWORD=carmesinalch
+    ports:
+      - 8161:8161
+      - 61616:61616
+      - 61613:61613
