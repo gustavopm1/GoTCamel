@@ -2,6 +2,7 @@ package com.github.gustavopm1.gotcamel.routes;
 
 import com.github.gustavopm1.gotcamel.GotCamelConstants;
 import com.github.gustavopm1.gotcamel.configuration.GotCamelConfiguration;
+import com.github.gustavopm1.gotcamel.metrics.MetricsService;
 import io.micrometer.core.instrument.Metrics;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,9 @@ public abstract class MainRouteBuilder extends RouteBuilder {
     public abstract void routeExceptions(RouteDefinition processor);
 
     @Autowired
+    protected MetricsService metricsService;
+
+    @Autowired
     @Setter
     protected GotCamelConfiguration configuration;
 
@@ -34,12 +38,17 @@ public abstract class MainRouteBuilder extends RouteBuilder {
 
         RouteDefinition processor = from(getFrom())
                                     .routeId(getRouteId())
-                                    .process(this::testMetrics)
                                     .process(this::processRouteStart);
 
         //Print the end of the process with the timer marking how much it took to process the queue
         processor
             .onCompletion()
+                .choice()
+                    .when(exchange -> exchange.getProperties().get("CamelExceptionCaught") == null)
+                        .process(metricsService.counterIncrement("count.router." + getRouteId(), "success"))
+                    .endChoice()
+                .end()
+
                 .process(this::processRouteEnd)
                 .process(this::logDuration)
                 .log(LoggingLevel.INFO,log,getRouteId(),"Took ${in.header."+ GotCamelConstants.ROUTE_DURATION+"} to process ${in.header."+GotCamelConstants.ROUTE_NAME+"}")

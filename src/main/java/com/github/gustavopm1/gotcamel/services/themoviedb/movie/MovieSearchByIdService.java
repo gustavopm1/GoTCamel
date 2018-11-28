@@ -51,6 +51,8 @@ public class MovieSearchByIdService extends TheMovieDBAbstractRequestService {
                 } catch (Exception e) {
                     log.error("Erro ao parsear filme!", e);
                 }
+            } else if (response.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
+                throw new MovieNotFoundException(response.getStatusCode().getReasonPhrase());
             }
 
             return Response.<Movie>builder()

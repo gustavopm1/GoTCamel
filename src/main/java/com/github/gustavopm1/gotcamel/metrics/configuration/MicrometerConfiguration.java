@@ -1,4 +1,4 @@
-package com.github.gustavopm1.gotcamel.configuration;
+package com.github.gustavopm1.gotcamel.metrics.configuration;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.spring.autoconfigure.MeterRegistryCustomizer;

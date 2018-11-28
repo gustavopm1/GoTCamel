@@ -7,7 +7,11 @@ import com.github.gustavopm1.gotcamel.marshallers.themoviedb.movie.MovieMarshall
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.themoviedb.movie.Movie;
 import com.github.gustavopm1.gotcamel.routes.MainRouteBuilder;
-import com.github.gustavopm1.gotcamel.services.themoviedb.movie.*;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieCastService;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieCrewService;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieKeywordsService;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieSearchByIdService;
+import com.github.gustavopm1.gotcamel.services.themoviedb.movie.MovieSearchService;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
@@ -18,7 +22,12 @@ import org.apache.camel.model.dataformat.JsonLibrary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static com.github.gustavopm1.gotcamel.predicates.Predicates.*;
+import static com.github.gustavopm1.gotcamel.predicates.Predicates.isFindFullMovieByMovieId;
+import static com.github.gustavopm1.gotcamel.predicates.Predicates.isFindMovieById;
+import static com.github.gustavopm1.gotcamel.predicates.Predicates.isFindMovieByName;
+import static com.github.gustavopm1.gotcamel.predicates.Predicates.isFindMovieCastByMovieId;
+import static com.github.gustavopm1.gotcamel.predicates.Predicates.isFindMovieCrewByMovieId;
+import static com.github.gustavopm1.gotcamel.predicates.Predicates.isFindMovieKeywordsByMovieId;
 
 @Component
 @Slf4j
@@ -50,13 +59,19 @@ public class MovieApiRoute extends MainRouteBuilder {
     private MovieMarshaller marshaller;
 
     @Override
-    public String getFrom() { return configuration.getRoutes().getInbound().getMovie(); }
+    public String getFrom() {
+        return configuration.getRoutes().getInbound().getMovie();
+    }
 
     @Override
-    public String getRouteId() {return configuration.getIds().getMovie(); }
+    public String getRouteId() {
+        return configuration.getIds().getMovie();
+    }
 
     @Override
-    public String getRouteName() {return configuration.getNames().getMovie(); }
+    public String getRouteName() {
+        return configuration.getNames().getMovie();
+    }
 
     @Override
     public void routeConfigure(RouteDefinition processor) {
@@ -115,6 +130,7 @@ public class MovieApiRoute extends MainRouteBuilder {
         processor
             .onException(MovieNotFoundException.class)
                 .handled(true)
+                .process(metricsService.counterIncrement("count.router." + getRouteId(), "error"))
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
