@@ -3,7 +3,6 @@ package com.github.gustavopm1.gotcamel.routes;
 import com.github.gustavopm1.gotcamel.GotCamelConstants;
 import com.github.gustavopm1.gotcamel.configuration.GotCamelConfiguration;
 import com.github.gustavopm1.gotcamel.metrics.MetricsService;
-import io.micrometer.core.instrument.Metrics;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
@@ -45,10 +44,15 @@ public abstract class MainRouteBuilder extends RouteBuilder {
             .onCompletion()
                 .choice()
                     .when(exchange -> exchange.getProperties().get("CamelExceptionCaught") == null)
-                        .process(metricsService.counterIncrement("count.router." + getRouteId(), "success"))
+                        .process(metricsService.count("result", "success"))
+                    .endChoice()
+
+                    .when(exchange -> exchange.getProperties().get("CamelExceptionCaught") != null)
+                        .process(metricsService.count("result", "error"))
                     .endChoice()
                 .end()
 
+                .process(metricsService.duration("metricName", "onCompletion"))
                 .process(this::processRouteEnd)
                 .process(this::logDuration)
                 .log(LoggingLevel.INFO,log,getRouteId(),"Took ${in.header."+ GotCamelConstants.ROUTE_DURATION+"} to process ${in.header."+GotCamelConstants.ROUTE_NAME+"}")
@@ -75,10 +79,6 @@ public abstract class MainRouteBuilder extends RouteBuilder {
             exchange.getIn().setHeader(GotCamelConstants.ROUTE_DURATION, 0);
         else
             exchange.getIn().setHeader(GotCamelConstants.ROUTE_DURATION, Duration.between(start,end).toString());
-    }
-
-    private void testMetrics(Exchange exchange) {
-        Metrics.counter("gotcamel.count.router", "result", "success").increment();
     }
 
 }

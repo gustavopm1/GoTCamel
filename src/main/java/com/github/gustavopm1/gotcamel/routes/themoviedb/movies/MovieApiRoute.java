@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.Processor;
+import org.apache.camel.builder.Builder;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +77,8 @@ public class MovieApiRoute extends MainRouteBuilder {
     @Override
     public void routeConfigure(RouteDefinition processor) {
 
-        processor
+        processor.setHeader("Test1", Builder.constant("Value1"))
+                .setHeader("Test2", Builder.constant("Value2"))
                 .log(LoggingLevel.INFO,log,getRouteId(), GotCamelConstants.ROUTE_START_KEY + " :: " + getRouteName())
                 .unmarshal(marshaller)
                 .log(LoggingLevel.INFO,log,getRouteId(), "Headers are ${headers}")
@@ -130,7 +132,6 @@ public class MovieApiRoute extends MainRouteBuilder {
         processor
             .onException(MovieNotFoundException.class)
                 .handled(true)
-                .process(metricsService.counterIncrement("count.router." + getRouteId(), "error"))
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {

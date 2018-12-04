@@ -36,3 +36,7 @@ com:
 management:
   security:
     enabled: false
+
+metric:
+  excludedHeaders:
+    - headerName: GoT-TYPEVALUE
