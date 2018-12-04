@@ -132,6 +132,7 @@ public class MovieApiRoute extends MainRouteBuilder {
         processor
             .onException(MovieNotFoundException.class)
                 .handled(true)
+                .process(metricsService.count("result", "error"))
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
@@ -142,6 +143,7 @@ public class MovieApiRoute extends MainRouteBuilder {
                 })
              .onException(TooManyRequestsException.class)
                 .handled(true)
+                .process(metricsService.count("result", "error"))
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {

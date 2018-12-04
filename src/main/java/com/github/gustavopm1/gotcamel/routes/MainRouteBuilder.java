@@ -47,9 +47,9 @@ public abstract class MainRouteBuilder extends RouteBuilder {
                         .process(metricsService.count("result", "success"))
                     .endChoice()
 
-                    .when(exchange -> exchange.getProperties().get("CamelExceptionCaught") != null)
-                        .process(metricsService.count("result", "error"))
-                    .endChoice()
+//                    .when(exchange -> exchange.getProperties().get("CamelExceptionCaught") != null)
+//                        .process(metricsService.count("result", "error"))
+//                    .endChoice()
                 .end()
 
                 .process(metricsService.duration("metricName", "onCompletion"))

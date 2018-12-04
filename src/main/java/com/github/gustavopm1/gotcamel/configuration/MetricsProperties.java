@@ -13,12 +13,12 @@ import java.util.List;
 @Configuration
 public class MetricsProperties {
 
-    private List<ExcludedHeaders> excludedHeaders;
+    private List<Headers> headers;
 
 
     @Getter
     @Setter
-    public static class ExcludedHeaders {
+    public static class Headers {
         private String headerName;
     }
 }

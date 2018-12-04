@@ -38,5 +38,15 @@ management:
     enabled: false
 
 metric:
-  excludedHeaders:
-    - headerName: GoT-TYPEVALUE
+  headers:
+#    - headerName: GoT-TYPEVALUE
+#    - headerName: JMSMessageID
+#    - headerName: JMSTimestamp
+#    - headerName: breadcrumbId
+
+    - headerName: Content-Type
+    - headerName: GoT-TYPENAME
+    - headerName: JMSDestination
+    - headerName: ROUTEID
+
+

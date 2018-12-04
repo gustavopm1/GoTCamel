@@ -14,6 +14,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,9 @@ public class MetricsService {
         return exchange -> {
             List<String> headerTags = convertHeadersToTags(exchange.getIn().getHeaders(), tags);
 
+//            Map<String, Object> headers =  new HashMap<>();
+//            List<String> headerTags = convertHeadersToTags(headers, tags);
+
             Metrics.counter(COUNT_METRIC_NAME, headerTags.toArray(new String[0])).increment();
         };
     }
@@ -55,17 +59,37 @@ public class MetricsService {
     private List<String> convertHeadersToTags(Map<String, Object> headers, String... tagsParam) {
         List<String> tags = new ArrayList<>(Arrays.asList(tagsParam));
         List<String> headerTags = new ArrayList<>();
+        Map<String, Object> includedHeaders = new HashMap<>();
 
-        headers.keySet().stream()
-                .filter(s -> metricsProperties.getExcludedHeaders().stream()
-                        .noneMatch(e -> e.getHeaderName().equals(s)))
-                .forEach(s -> {
-                    String stringValue = stringConverter.convert(headers.get(s));
-                    if (stringValue != null) {
-                        headerTags.add(s);
-                        headerTags.add(stringValue);
-                    }
-                });
+//        metricsProperties.getHeaders().stream()
+//                .forEach(h -> includedHeaders.put(h.getHeaderName(), ""));
+
+
+        metricsProperties.getHeaders().stream().forEach(h -> {
+
+            Object headerValue = headers.get(h.getHeaderName());
+            String headerStringValue = stringConverter.convert(headerValue);
+
+            headerTags.add(h.getHeaderName());
+            if (headerStringValue != null) {
+                headerTags.add(headerStringValue);
+            } else {
+                headerTags.add("");
+            }
+        });
+
+//        headers.keySet().stream()
+//                .filter(s -> metricsProperties.getHeaders().stream()
+//                        .anyMatch(e -> e.getHeaderName().equals(s)))
+//                .forEach(s -> {
+//                    String stringValue = stringConverter.convert(headers.get(s));
+//                    headerTags.add(s);
+//                    if (stringValue != null) {
+//                        headerTags.add(stringValue);
+//                    } else {
+//                        headerTags.add("");
+//                    }
+//                });
 
         headerTags.addAll(tags);
 
