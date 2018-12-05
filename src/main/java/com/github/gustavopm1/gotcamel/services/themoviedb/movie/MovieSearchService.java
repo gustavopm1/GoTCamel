@@ -65,10 +65,6 @@ public class MovieSearchService extends TheMovieDBAbstractRequestService {
                             .body(movies.get(0))
                             .build();
 
-
-                    headers.put(TYPE_NAME, SearchType.MOVIEID);
-                    headers.put(TYPE_VALUE, responseMovie.getBody().getId());
-
                     return movieSearchByIdService.getMovieById(Integer.toString(movies.get(0).getId()), headers);
 
                 } catch (Exception e) {
