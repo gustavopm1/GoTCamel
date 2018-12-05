@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
-public abstract class AbstractRequestService {
+public abstract class  AbstractRequestService {
 
     public static final String API_KEY = "api_key";
 

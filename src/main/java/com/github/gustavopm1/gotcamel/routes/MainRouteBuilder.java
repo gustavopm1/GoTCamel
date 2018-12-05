@@ -3,6 +3,7 @@ package com.github.gustavopm1.gotcamel.routes;
 import com.github.gustavopm1.gotcamel.GotCamelConstants;
 import com.github.gustavopm1.gotcamel.configuration.GotCamelConfiguration;
 import com.github.gustavopm1.gotcamel.metrics.MetricsService;
+import io.micrometer.core.instrument.Metrics;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
@@ -77,8 +78,14 @@ public abstract class MainRouteBuilder extends RouteBuilder {
         final LocalDateTime end = (LocalDateTime)exchange.getIn().getHeaders().get(GotCamelConstants.ROUTE_END_KEY);
         if(start == null || end == null)
             exchange.getIn().setHeader(GotCamelConstants.ROUTE_DURATION, 0);
-        else
-            exchange.getIn().setHeader(GotCamelConstants.ROUTE_DURATION, Duration.between(start,end).toString());
+        else {
+            exchange.getIn().setHeader(GotCamelConstants.ROUTE_DURATION, Duration.between(start, end).toString());
+            Metrics.timer("gotcamel.count.router", "duration","success").record(Duration.between(start,end));
+        }
+    }
+
+    private void testMetrics(Exchange exchange) {
+        Metrics.counter("gotcamel.count.router", "result", "success").increment();
     }
 
 }

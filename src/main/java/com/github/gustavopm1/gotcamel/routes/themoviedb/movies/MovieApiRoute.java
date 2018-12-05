@@ -4,6 +4,7 @@ import com.github.gustavopm1.gotcamel.GotCamelConstants;
 import com.github.gustavopm1.gotcamel.exceptions.TooManyRequestsException;
 import com.github.gustavopm1.gotcamel.exceptions.themoviedb.movie.MovieNotFoundException;
 import com.github.gustavopm1.gotcamel.marshallers.themoviedb.movie.MovieMarshaller;
+import com.github.gustavopm1.gotcamel.metrics.MetricsService;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.themoviedb.movie.Movie;
 import com.github.gustavopm1.gotcamel.routes.MainRouteBuilder;
@@ -23,6 +24,8 @@ import org.apache.camel.model.dataformat.JsonLibrary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 import static com.github.gustavopm1.gotcamel.predicates.Predicates.isFindFullMovieByMovieId;
 import static com.github.gustavopm1.gotcamel.predicates.Predicates.isFindMovieById;
 import static com.github.gustavopm1.gotcamel.predicates.Predicates.isFindMovieByName;
@@ -34,6 +37,10 @@ import static com.github.gustavopm1.gotcamel.predicates.Predicates.isFindMovieKe
 @Slf4j
 public class MovieApiRoute extends MainRouteBuilder {
 
+
+
+    @Autowired
+    protected MetricsService metricsService;
 
     @Autowired
     @Setter
@@ -84,33 +91,57 @@ public class MovieApiRoute extends MainRouteBuilder {
                 .log(LoggingLevel.INFO,log,getRouteId(), "Headers are ${headers}")
                 .choice()
                     .when(isFindMovieByName())
+                        .setHeader(GotCamelConstants.ROUTE_START_LOCAL_TIME, Builder.constant(LocalDateTime.now()))
                         .bean(movieSearchService,"getMovie").id("getMovieServiceBean")
-                    .endChoice()
+                        .process(metricsService.duration("metricName","findMovieByName"))
+                     .endChoice()
 
                     .when(isFindMovieById())
+                        .setHeader(GotCamelConstants.ROUTE_START_LOCAL_TIME, Builder.constant(LocalDateTime.now()))
                         .bean(movieSearchByIdService,"getMovieById").id("getMovieByIdServiceBean")
+                        .process(metricsService.duration("metricName","findMovieById"))
                     .endChoice()
 
                     .when(isFindMovieCastByMovieId())
+                        .setHeader(GotCamelConstants.ROUTE_START_LOCAL_TIME, Builder.constant(LocalDateTime.now()))
                         .bean(movieSearchByIdService,"getMovieById").id("getMovieServiceOnCastIdBean")
+                        .process(metricsService.duration("metricName", "findMovieCastMovieId"))
+                        .setHeader(GotCamelConstants.ROUTE_START_LOCAL_TIME, Builder.constant(LocalDateTime.now()))
                         .bean(movieCastService,"getMovieCastById").id("getMovieCastByIdServiceBean")
+                        .process(metricsService.duration("metricName","findMovieCastId"))
                     .endChoice()
 
                     .when(isFindMovieCrewByMovieId())
+                        .setHeader(GotCamelConstants.ROUTE_START_LOCAL_TIME, Builder.constant(LocalDateTime.now()))
                         .bean(movieSearchByIdService,"getMovieById").id("getMovieServiceOnCrewIdBean")
+                        .process(metricsService.duration("metricName","findMovieCrewMovieId"))
+                        .setHeader(GotCamelConstants.ROUTE_START_LOCAL_TIME, Builder.constant(LocalDateTime.now()))
                         .bean(movieCrewService,"getMovieCrewById").id("getMovieCrewByIdServiceBean")
+                        .process(metricsService.duration("metricName","findMovieCrewId"))
                     .endChoice()
 
                     .when(isFindMovieKeywordsByMovieId())
+                        .setHeader(GotCamelConstants.ROUTE_START_LOCAL_TIME, Builder.constant(LocalDateTime.now()))
                         .bean(movieSearchByIdService,"getMovieById").id("getMovieServiceOnKeywordsIdBean")
+                        .process(metricsService.duration("metricName", "findMovieKeywordsMovieId"))
+                        .setHeader(GotCamelConstants.ROUTE_START_LOCAL_TIME, Builder.constant(LocalDateTime.now()))
                         .bean(movieKeywordsService,"getMovieKeywordsById").id("getMovieKeywordsByIdServiceBean")
+                        .process(metricsService.duration("metricName", "findMovieKeywordsId"))
                     .endChoice()
 
                     .when(isFindFullMovieByMovieId())
+                        .setHeader(GotCamelConstants.ROUTE_START_LOCAL_TIME, Builder.constant(LocalDateTime.now()))
                         .bean(movieSearchByIdService,"getMovieById").id("getFullMovieServicedBean")
+                        .process(metricsService.duration("metricName", "fullMovieId"))
+                        .setHeader(GotCamelConstants.ROUTE_START_LOCAL_TIME, Builder.constant(LocalDateTime.now()))
                         .bean(movieCastService,"getMovieCastById").id("getFullMovieCastByIdServiceBean")
+                        .process(metricsService.duration("metricName", "fullMovieCast"))
+                        .setHeader(GotCamelConstants.ROUTE_START_LOCAL_TIME, Builder.constant(LocalDateTime.now()))
                         .bean(movieCrewService,"getMovieCrewById").id("getFullMovieCrewByIdServiceBean")
+                        .process(metricsService.duration("metricName","fullMovieCrew"))
+                        .setHeader(GotCamelConstants.ROUTE_START_LOCAL_TIME, Builder.constant(LocalDateTime.now()))
                         .bean(movieKeywordsService,"getMovieKeywordsById").id("getFullMovieKeywordsByIdServiceBean")
+                        .process(metricsService.duration("metricName","fullMovieKeywords"))
                     .endChoice()
 
                 .otherwise()

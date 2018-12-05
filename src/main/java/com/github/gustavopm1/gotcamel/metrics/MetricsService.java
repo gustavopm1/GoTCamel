@@ -14,7 +14,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,10 +58,6 @@ public class MetricsService {
     private List<String> convertHeadersToTags(Map<String, Object> headers, String... tagsParam) {
         List<String> tags = new ArrayList<>(Arrays.asList(tagsParam));
         List<String> headerTags = new ArrayList<>();
-        Map<String, Object> includedHeaders = new HashMap<>();
-
-//        metricsProperties.getHeaders().stream()
-//                .forEach(h -> includedHeaders.put(h.getHeaderName(), ""));
 
 
         metricsProperties.getHeaders().stream().forEach(h -> {
@@ -97,13 +92,22 @@ public class MetricsService {
     }
 
     private Duration getCalculateDuration(Exchange exchange) {
+
         LocalDateTime start = (LocalDateTime) exchange.getIn().getHeaders().get(GotCamelConstants.ROUTE_START_KEY);
+        LocalDateTime localStart = (LocalDateTime) exchange.getIn().getHeaders().get(GotCamelConstants.ROUTE_START_LOCAL_TIME);
+
+       // exchange.getIn().setHeader(GotCamelConstants.ROUTE_START_LOCAL_TIME, null);
+
         if (start == null) {
             return null;
         }
+
         LocalDateTime end = LocalDateTime.now();
 
-        return Duration.between(start, end);
+        if(localStart == null) {
+            return Duration.between(start, end);
+        } else {
+            return Duration.between(localStart, end);
+        }
     }
-
 }
