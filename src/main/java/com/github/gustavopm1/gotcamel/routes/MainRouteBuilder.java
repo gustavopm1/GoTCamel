@@ -47,12 +47,7 @@ public abstract class MainRouteBuilder extends RouteBuilder {
                     .when(exchange -> exchange.getProperties().get("CamelExceptionCaught") == null)
                         .process(metricsService.count("result", "success"))
                     .endChoice()
-
-//                    .when(exchange -> exchange.getProperties().get("CamelExceptionCaught") != null)
-//                        .process(metricsService.count("result", "error"))
-//                    .endChoice()
                 .end()
-
                 .process(metricsService.duration("metricName", "onCompletion"))
                 .process(this::processRouteEnd)
                 .process(this::logDuration)
@@ -80,12 +75,6 @@ public abstract class MainRouteBuilder extends RouteBuilder {
             exchange.getIn().setHeader(GotCamelConstants.ROUTE_DURATION, 0);
         else {
             exchange.getIn().setHeader(GotCamelConstants.ROUTE_DURATION, Duration.between(start, end).toString());
-            Metrics.timer("gotcamel.count.router", "duration","success").record(Duration.between(start,end));
         }
     }
-
-    private void testMetrics(Exchange exchange) {
-        Metrics.counter("gotcamel.count.router", "result", "success").increment();
-    }
-
 }

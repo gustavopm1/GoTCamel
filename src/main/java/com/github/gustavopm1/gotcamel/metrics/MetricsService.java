@@ -38,10 +38,6 @@ public class MetricsService {
     public Processor count(String... tags) {
         return exchange -> {
             List<String> headerTags = convertHeadersToTags(exchange.getIn().getHeaders(), tags);
-
-//            Map<String, Object> headers =  new HashMap<>();
-//            List<String> headerTags = convertHeadersToTags(headers, tags);
-
             Metrics.counter(COUNT_METRIC_NAME, headerTags.toArray(new String[0])).increment();
         };
     }
@@ -59,7 +55,6 @@ public class MetricsService {
         List<String> tags = new ArrayList<>(Arrays.asList(tagsParam));
         List<String> headerTags = new ArrayList<>();
 
-
         metricsProperties.getHeaders().stream().forEach(h -> {
 
             Object headerValue = headers.get(h.getHeaderName());
@@ -73,19 +68,6 @@ public class MetricsService {
             }
         });
 
-//        headers.keySet().stream()
-//                .filter(s -> metricsProperties.getHeaders().stream()
-//                        .anyMatch(e -> e.getHeaderName().equals(s)))
-//                .forEach(s -> {
-//                    String stringValue = stringConverter.convert(headers.get(s));
-//                    headerTags.add(s);
-//                    if (stringValue != null) {
-//                        headerTags.add(stringValue);
-//                    } else {
-//                        headerTags.add("");
-//                    }
-//                });
-
         headerTags.addAll(tags);
 
         return headerTags;
@@ -94,9 +76,10 @@ public class MetricsService {
     private Duration getCalculateDuration(Exchange exchange) {
 
         LocalDateTime start = (LocalDateTime) exchange.getIn().getHeaders().get(GotCamelConstants.ROUTE_START_KEY);
-        LocalDateTime localStart = (LocalDateTime) exchange.getIn().getHeaders().get(GotCamelConstants.ROUTE_START_LOCAL_TIME);
+        LocalDateTime localStart =
+                (LocalDateTime) exchange.getIn().getHeaders().get(GotCamelConstants.ROUTE_START_LOCAL_TIME);
 
-       // exchange.getIn().setHeader(GotCamelConstants.ROUTE_START_LOCAL_TIME, null);
+        exchange.getIn().setHeader(GotCamelConstants.ROUTE_START_LOCAL_TIME, null);
 
         if (start == null) {
             return null;
@@ -104,7 +87,7 @@ public class MetricsService {
 
         LocalDateTime end = LocalDateTime.now();
 
-        if(localStart == null) {
+        if (localStart == null) {
             return Duration.between(start, end);
         } else {
             return Duration.between(localStart, end);
