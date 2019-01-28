@@ -8,4 +8,7 @@ public class GotCamelIdentifications {
     String movieCast;
     String person;
     String artist;
+    String experimental;
+    String experimentalPattern;
 }
+

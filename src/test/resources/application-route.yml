@@ -11,7 +11,11 @@ com:
       inbound:
         movie: direct:movies
         person: direct:person
+        experimental: direct:experimental
+        experimentalPattern: seda:experimentalPattern
       outbound:
         movie: ''
         movieCast: ''
         person: ''
+        experimental: seda:experimentalPattern
+        experimentalPattern: seda:experimentalPattern

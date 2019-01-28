@@ -42,6 +42,23 @@ public abstract class AbstractRouteTest {
         return mapper.readValue(jsonResponse,clazz);
     }
 
+    protected <T> T sendMessage(String endpoint, Object body, Map<String,Object> headers,Class<T> clazz) throws IOException {
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        String jsonResponse = (String)template.sendBodyAndHeaders(
+                endpoint,
+                ExchangePattern.InOut,
+                mapper.writeValueAsString(body),
+                headers);
+
+        return mapper.readValue(jsonResponse,clazz);
+    }
+
     protected String sendString(String endpoint,String body,Map<String,Object> headers) throws JsonProcessingException {
         return (String) template.sendBodyAndHeaders(
                 endpoint,

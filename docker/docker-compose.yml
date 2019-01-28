@@ -9,7 +9,7 @@ services:
     image: prom/prometheus:v2.5.0
     container_name: prometheus
     volumes:
-      - /c/Users/gpmoraes/Documents/GoTCamel/docker/prometheus/:/etc/prometheus/
+      - /d/Repos/opensource/GoTCamel/docker/prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -29,8 +29,8 @@ services:
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
-      - /d/Paulo/Personal/Dockers/metrics/grafana/datasources:/etc/grafana/datasources
-      - /d/Paulo/Personal/Dockers/metrics/grafana/dashboards:/etc/grafana/dashboards
+      - /d/Repos/opensource/GoTCamel/docker/grafana/datasources:/etc/grafana/datasources
+      - /d/Repos/opensource/GoTCamel/docker/grafana/dashboards:/etc/grafana/dashboards
      # - /d/Paulo/Personal/Dockers/metrics/grafana/setup.sh:/setup.sh
     #entrypoint: /setup.sh
     environment:

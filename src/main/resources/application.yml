@@ -15,12 +15,18 @@ com:
         movie: activemq:queue:movie.requests?exchangePattern=InOut
         person: activemq:queue:person.requests?exchangePattern=InOut
         artist: activemq:queue:artist.requests?exchangePattern=InOut
+        experimental: activemq:queue:experimental.requests?exchangePattern=InOut
+        experimentalPattern: seda:experimental?exchangePattern=InOut
       outbound:
         movie: ''
         person: ''
+        artist: ''
+        experimental: seda:experimental?exchangePattern=InOut
     ids:
       movie: movies
       person: person
+      experimental: experiment
+      experimentalPattern: pattern-exp
     services:
       movieUrl: movie/:id
       movieUrlName: search/movie
@@ -32,6 +38,8 @@ com:
       movie: Movie Route
       movieCast: Movie Cast Route
       person: Person Route
+      experimental: Experimental Route
+      experimentalPattern: Experimental Pattern Route
 
 management:
   security:
