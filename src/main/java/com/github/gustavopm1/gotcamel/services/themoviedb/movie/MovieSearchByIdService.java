@@ -13,14 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_VALUE;
 
 @Service
-@Slf4j
-public class MovieSearchByIdService extends TheMovieDBAbstractRequestService {
+public class MovieSearchByIdService extends TheMovieDBAbstractRequestService<Movie> {
 
     @Override
     public String getURL(Map<String, Object> headers) {
@@ -36,34 +36,8 @@ public class MovieSearchByIdService extends TheMovieDBAbstractRequestService {
         return new HashMap<>();
     }
 
-    public Response<Movie> getMovieById(@Header (TYPE_VALUE) String id, @Headers Map<String, Object> headers) throws MovieNotFoundException {
-
-        try {
-            ResponseEntity<String> response = doGet(headers);
-
-            if (response.getStatusCode().equals(HttpStatus.OK)) {
-                try {
-                    Movie movie = new ObjectMapper().readValue(response.getBody(), Movie.class);
-                    return Response.<Movie>builder()
-                            .found(true)
-                            .body(movie)
-                            .build();
-                } catch (Exception e) {
-                    log.error("Erro ao parsear filme!", e);
-                }
-            } else if (response.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
-                throw new MovieNotFoundException(response.getStatusCode().getReasonPhrase());
-            }
-
-            return Response.<Movie>builder()
-                    .found(false)
-                    .build();
-        } catch (HttpClientErrorException e) {
-            log.error("HttpClientErrorException while doing get", e);
-            throw new MovieNotFoundException(e.getMessage());
-        } catch (Exception e) {
-            log.error("Error while doing get", e);
-            throw new MovieNotFoundException(e.getMessage());
-        }
+    @Override
+    protected Movie createBody(String responseBody) throws IOException {
+        return new ObjectMapper().readValue(responseBody, Movie.class);
     }
 }

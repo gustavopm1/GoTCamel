@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +20,7 @@ import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_VALUE;
 
 @Service
 @Slf4j
-public class PersonSearchByIdService extends TheMovieDBAbstractRequestService {
+public class PersonSearchByIdService extends TheMovieDBAbstractRequestService<Person> {
 
     @Override
     public String getURL(Map<String, Object> headers) {
@@ -36,25 +37,8 @@ public class PersonSearchByIdService extends TheMovieDBAbstractRequestService {
         return new HashMap<>();
     }
 
-
-    public Response<Person> getPersonById(@Header(PERSON_ID) String id, @Headers Map<String, Object> headers) throws InterruptedException {
-
-        ResponseEntity<String> response = doGet(headers);
-        System.out.println("Response::" + response.getBody());
-        if (response.getStatusCode().equals(HttpStatus.OK)) {
-            try {
-                Person person = new ObjectMapper().readValue(response.getBody(), Person.class);
-                return Response.<Person>builder()
-                        .found(true)
-                        .body(person)
-                        .build();
-            } catch (Exception e) {
-                log.error("Erro ao parsear pessoa!", e);
-            }
-        }
-
-        return Response.<Person>builder()
-                .found(false)
-                .build();
+    @Override
+    protected Person createBody(String responseBody) throws IOException {
+        return new ObjectMapper().readValue(responseBody, Person.class);
     }
 }

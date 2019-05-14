@@ -4,6 +4,7 @@ package com.github.gustavopm1.gotcamel.services.themoviedb.person;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.gustavopm1.gotcamel.exceptions.themoviedb.movie.MovieNotFoundException;
 import com.github.gustavopm1.gotcamel.models.Response;
 import com.github.gustavopm1.gotcamel.models.SearchType;
 import com.github.gustavopm1.gotcamel.models.themoviedb.person.Person;
@@ -17,16 +18,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_NAME;
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_VALUE;
 
 @Service
 @Slf4j
-public class PersonSearchService extends TheMovieDBAbstractRequestService {
+public class PersonSearchService extends TheMovieDBAbstractRequestService<Person> {
 
     @Autowired
     @Setter
@@ -49,40 +52,18 @@ public class PersonSearchService extends TheMovieDBAbstractRequestService {
         return parameters;
     }
 
-
-    public Response<Person> getPerson(@Header(TYPE_VALUE) String personName, @Headers Map<String,Object> headers) throws InterruptedException {
-
-        ResponseEntity<String> response = doGet(headers);
-
-        if(response.getStatusCode().equals(HttpStatus.OK)){
-            try {
-
-                JsonNode json = new ObjectMapper().readTree(response.getBody());
-
-                List<Person> people = new ObjectMapper().readValue(json.get("results").toString(), new TypeReference<List<Person>>(){});
-
-                Response<Person> responsePerson = Response.<Person>builder()
-                        .found(true)
-                        .body(people.get(0))
-                        .build();
-
-
-                headers.put(TYPE_NAME, SearchType.MOVIEID);
-                headers.put(TYPE_VALUE, responsePerson.getBody().getId());
-
-                return personSearchByIdService.getPersonById(Integer.toString(people.get(0).getId()),headers);
-
-            }catch (Exception e){
-                log.error("Erro ao parsear filme!", e);
-            }
-        }
-
-        return Response.<Person>builder()
-                .found(false)
-                .build();
+    @Override
+    public Response<Person> requestMovieDBTemplate(String parameter, Map<String, Object> headers) throws MovieNotFoundException {
+        Response<Person> personResponse = super.requestMovieDBTemplate(parameter, headers);
+        headers.put(TYPE_NAME, SearchType.MOVIEID);
+        headers.put(TYPE_VALUE, personResponse.getBody().getId());
+        return personSearchByIdService.requestMovieDBTemplate(Integer.toString(personResponse.getBody().getId()),headers);
     }
 
-
-
-
+    @Override
+    protected Person createBody(String responseBody) throws IOException {
+        JsonNode json = new ObjectMapper().readTree(responseBody);
+        Optional<List<Person>> optionalPeople = Optional.ofNullable(new ObjectMapper().readValue(json.get("results").toString(), new TypeReference<List<Person>>(){}));
+        return optionalPeople.map(person -> person.get(0)).orElse(null);
+    }
 }

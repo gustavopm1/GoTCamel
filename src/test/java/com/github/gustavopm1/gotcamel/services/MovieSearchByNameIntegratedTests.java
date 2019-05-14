@@ -41,7 +41,7 @@ public class MovieSearchByNameIntegratedTests {
         headers.put(TYPE_NAME, SearchType.MOVIENAME);
         headers.put(TYPE_VALUE, movie.getOriginal_title());
 
-        Response<Movie> response = movieSearchService.getMovie("The 13th Warrior", headers);
+        Response<Movie> response = movieSearchService.requestMovieDBTemplate("The 13th Warrior", headers);
 
         assertTrue(response.isFound());
         assertEquals(movie.getId(),response.getBody().getId());

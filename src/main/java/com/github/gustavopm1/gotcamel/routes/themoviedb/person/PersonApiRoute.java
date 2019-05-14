@@ -59,10 +59,10 @@ public class PersonApiRoute extends MainRouteBuilder {
                 .log(LoggingLevel.INFO,log,getRouteId(), "Headers are ${headers}")
                 .choice()
                     .when(isFindPersonById())
-                        .bean(personSearchByIdService,"getPersonById").id("getPersonByIdServiceBean")
+                        .bean(personSearchByIdService,"requestMovieDBTemplate").id("getPersonByIdServiceBean")
                     .endChoice()
                     .when(isFindPersonByName())
-                        .bean(personSearchService,"getPerson").id("getPersonByNameServiceBean")
+                        .bean(personSearchService,"requestMovieDBTemplate").id("getPersonByNameServiceBean")
                     .endChoice()
                 .otherwise()
                 .process(new Processor() {

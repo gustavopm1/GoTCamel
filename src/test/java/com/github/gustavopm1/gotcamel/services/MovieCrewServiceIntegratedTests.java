@@ -46,7 +46,7 @@ public class MovieCrewServiceIntegratedTests {
         headers.put(TYPE_NAME, SearchType.MOVIEID);
         headers.put(TYPE_VALUE, Integer.toString(movie.getId()));
 
-        Response<Movie> response = movieSearchByIdService.getMovieById("1911", headers);
+        Response<Movie> response = movieSearchByIdService.requestMovieDBTemplate("1911", headers);
 
         headers.put(TYPE_NAME, SearchType.CREWMOVIEID);
 
@@ -61,6 +61,7 @@ public class MovieCrewServiceIntegratedTests {
                 .isInstanceOf(Movie.class)
                 .hasFieldOrPropertyWithValue("original_title","The 13th Warrior")
                 .hasFieldOrPropertyWithValue("crew", Arrays.asList(Crew.builder().id(19893).name("Warren Lewis").department("Writing").build(),
-                        Crew.builder().id(1090).name("John McTiernan").department("Directing").build()));
+                        Crew.builder().id(1090).name("John McTiernan").department("Directing").build(),
+                        Crew.builder().id(4782).name("Michael Crichton").department("Writing").build()));
     }
 }

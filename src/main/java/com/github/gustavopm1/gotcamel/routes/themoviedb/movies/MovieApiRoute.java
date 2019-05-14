@@ -90,19 +90,19 @@ public class MovieApiRoute extends MainRouteBuilder {
                 .choice()
                     .when(isFindMovieByName())
                         .process(this::setTimeNowHeader)
-                        .bean(movieSearchService,"getMovie").id("getMovieServiceBean")
+                        .bean(movieSearchService,"requestMovieDBTemplate").id("getMovieServiceBean")
                         .process(metricsService.duration("metricName","findMovieByName"))
                      .endChoice()
 
                     .when(isFindMovieById())
                         .process(this::setTimeNowHeader)
-                        .bean(movieSearchByIdService,"getMovieById").id("getMovieByIdServiceBean")
+                        .bean(movieSearchByIdService,"requestMovieDBTemplate").id("getMovieByIdServiceBean")
                         .process(metricsService.duration("metricName","findMovieById"))
                     .endChoice()
 
                     .when(isFindMovieCastByMovieId())
                         .process(this::setTimeNowHeader)
-                        .bean(movieSearchByIdService,"getMovieById").id("getMovieServiceOnCastIdBean")
+                        .bean(movieSearchByIdService,"requestMovieDBTemplate").id("getMovieServiceOnCastIdBean")
                         .process(metricsService.duration("metricName", "findMovieCastMovieId"))
                         .process(this::setTimeNowHeader)
                         .bean(movieCastService,"getMovieCastById").id("getMovieCastByIdServiceBean")
@@ -111,7 +111,7 @@ public class MovieApiRoute extends MainRouteBuilder {
 
                     .when(isFindMovieCrewByMovieId())
                         .process(this::setTimeNowHeader)
-                        .bean(movieSearchByIdService,"getMovieById").id("getMovieServiceOnCrewIdBean")
+                        .bean(movieSearchByIdService,"requestMovieDBTemplate").id("getMovieServiceOnCrewIdBean")
                         .process(metricsService.duration("metricName","findMovieCrewMovieId"))
                         .process(this::setTimeNowHeader)
                         .bean(movieCrewService,"getMovieCrewById").id("getMovieCrewByIdServiceBean")
@@ -120,7 +120,7 @@ public class MovieApiRoute extends MainRouteBuilder {
 
                     .when(isFindMovieKeywordsByMovieId())
                         .process(this::setTimeNowHeader)
-                        .bean(movieSearchByIdService,"getMovieById").id("getMovieServiceOnKeywordsIdBean")
+                        .bean(movieSearchByIdService,"requestMovieDBTemplate").id("getMovieServiceOnKeywordsIdBean")
                         .process(metricsService.duration("metricName", "findMovieKeywordsMovieId"))
                         .process(this::setTimeNowHeader)
                         .bean(movieKeywordsService,"getMovieKeywordsById").id("getMovieKeywordsByIdServiceBean")
@@ -129,7 +129,8 @@ public class MovieApiRoute extends MainRouteBuilder {
 
                     .when(isFindFullMovieByMovieId())
                         .process(this::setTimeNowHeader)
-                        .bean(movieSearchByIdService,"getMovieById").id("getFullMovieServicedBean")
+                        .bean(movieSearchByIdService,"requestMovieDBTemplate" +
+                                "").id("getFullMovieServicedBean")
                         .process(metricsService.duration("metricName", "fullMovieId"))
                         .process(this::setTimeNowHeader)
                         .bean(movieCastService,"getMovieCastById").id("getFullMovieCastByIdServiceBean")

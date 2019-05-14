@@ -46,7 +46,7 @@ public class MovieCastServiceIntegratedTest {
         headers.put(TYPE_NAME, SearchType.MOVIEID);
         headers.put(TYPE_VALUE, Integer.toString(movie.getId()));
 
-        Response<Movie> response = movieSearchByIdService.getMovieById("1911", headers);
+        Response<Movie> response = movieSearchByIdService.requestMovieDBTemplate("1911", headers);
 
         headers.put(TYPE_NAME, SearchType.CASTMOVIEID);
 

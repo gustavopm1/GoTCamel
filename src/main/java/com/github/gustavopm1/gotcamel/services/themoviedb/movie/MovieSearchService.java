@@ -3,29 +3,25 @@ package com.github.gustavopm1.gotcamel.services.themoviedb.movie;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.gustavopm1.gotcamel.exceptions.themoviedb.movie.MovieNotFoundException;
 import com.github.gustavopm1.gotcamel.models.Response;
-import com.github.gustavopm1.gotcamel.models.SearchType;
 import com.github.gustavopm1.gotcamel.models.themoviedb.movie.Movie;
 import com.github.gustavopm1.gotcamel.services.TheMovieDBAbstractRequestService;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.camel.Header;
-import org.apache.camel.Headers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_NAME;
 import static com.github.gustavopm1.gotcamel.GotCamelConstants.TYPE_VALUE;
 
 @Service
 @Slf4j
-public class MovieSearchService extends TheMovieDBAbstractRequestService {
+public class MovieSearchService extends TheMovieDBAbstractRequestService<Movie> {
 
     @Autowired
     @Setter
@@ -48,35 +44,16 @@ public class MovieSearchService extends TheMovieDBAbstractRequestService {
         return parameters;
     }
 
-    public Response<Movie> getMovie(@Header(TYPE_VALUE) String movieName, @Headers Map<String,Object> headers) {
-
-            ResponseEntity<String> response = doGet(headers);
-
-            if (response.getStatusCode().equals(HttpStatus.OK)) {
-                try {
-
-                    JsonNode json = new ObjectMapper().readTree(response.getBody());
-
-                    List<Movie> movies = new ObjectMapper().readValue(json.get("results").toString(), new TypeReference<List<Movie>>() {
-                    });
-
-                    Response<Movie> responseMovie = Response.<Movie>builder()
-                            .found(true)
-                            .body(movies.get(0))
-                            .build();
-
-                    return movieSearchByIdService.getMovieById(Integer.toString(movies.get(0).getId()), headers);
-
-                } catch (Exception e) {
-                    log.error("Erro ao parsear filme!", e);
-                }
-            }
-
-            return Response.<Movie>builder()
-                    .found(false)
-                    .build();
-
-
+    @Override
+    protected Movie createBody(String responseBody) throws IOException {
+        JsonNode json = new ObjectMapper().readTree(responseBody);
+        List<Movie> movies = new ObjectMapper().readValue(json.get("results").toString(), new TypeReference<List<Movie>>(){});
+        return movies.get(0);
     }
 
+    @Override
+    public Response<Movie> requestMovieDBTemplate(String parameter, Map<String, Object> headers) throws MovieNotFoundException {
+        Response<Movie> movie = super.requestMovieDBTemplate(parameter, headers);
+        return movieSearchByIdService.requestMovieDBTemplate(Integer.toString(movie.getBody().getId()), headers);
+    }
 }
